@@ -1,0 +1,20 @@
+
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content bg-facebook">
+    <div class="modal-header">
+      <h5 class="modal-title">Suppression</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form name="form" (ngSubmit)="deleteBanque()">
+      <div class="modal-body fs-6">
+
+        Voulez vous supprimer :
+        <strong *ngIf="banque!=null">{{banque.libelle}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" #closebutton data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-danger" >Supprimer</button>
+      </div>
+    </form>
+  </div>
+</div>

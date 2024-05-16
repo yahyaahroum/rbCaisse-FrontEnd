@@ -1,0 +1,76 @@
+<div class="modal-dialog modal-lg modal-dialog-centered ">
+
+  <div class="modal-content bg-facebook card border-top border-0 border-4 border-white">
+    <form name="form" [formGroup]="myFormAdd" (ngSubmit)="onAdd()">
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col-xl-12 mx-auto">
+            <button type="button" class="btn-close" style="position: relative; float: right;"  data-bs-dismiss="modal" aria-label="Close"></button>
+            <br>
+            <div class="card-body">
+              <div class="border p-4 rounded">
+                <div class="card-title d-flex align-items-center">
+                  <div><i class="bx bxs-user me-1 font-22 text-white"></i>
+                  </div>
+                  <h5 class="mb-0 text-white">Ajout d'un nouveau appartement</h5>
+                </div>
+                <hr/>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Libellé</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez le libelle"
+                           formControlName="libelle" autocomplete="off"
+                           id="libelle" name="libelle" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Compteur Eau</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez le numero de compteur d'eau"
+                           formControlName="compteurEau" autocomplete="off"
+                           id="compteurEau" name="compteurEau">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Compteur Electricité</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez le numero de compteur d'electricité"
+                           formControlName="compteurElectricite" autocomplete="off"
+                           id="compteurElectricite" name="compteurElectricite" >
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Prix Loyé</label>
+                  <div class="col-sm-9">
+                    <input type="number" class="form-control" placeholder="Entrez le prix du loyé"
+                           formControlName="montantLoye"
+                           id="montantLoye" name="montantLoye" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Ville</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez une ville" formControlName="ville"
+                               name="ville">
+                      <ng-option *ngFor="let ville of villes" [value]="ville" (change)="onMaterialGroupChange($event)">
+                        {{ville.libelle}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" #closebutton data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" [disabled]="!myFormAdd.valid" class="btn btn-primary">Valider</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+

@@ -1,0 +1,102 @@
+
+<!--wrapper-->
+
+
+<!--start page wrapper -->
+<div class="page-wrapper">
+  <div class="page-content">
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="ps-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-0 p-0">
+            <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Liste Utilisateurs</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!--end breadcrumb-->
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-lg-flex align-items-center mb-4 gap-3">
+          <div class="position-relative">
+            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une affaire..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+          </div>
+          <div class="ms-auto">
+            <a type="Button" class="btn btn-light radius-30 mt-2 mt-lg-0"
+               data-bs-toggle="modal" data-bs-target="#addModal">
+              <i class="bx bxs-plus-square" ></i>Ajouter une banque</a>
+          </div>
+
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0 table-hover">
+            <thead class="table-light">
+            <tr>
+              <th>Id</th>
+              <th>Nom Banque</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let post of POSTS  | psearch:pfiltre | paginate:{
+                     itemsPerPage: tableSize,
+                     currentPage: page,
+                     totalItems: count}; let i = index ">
+              <td class="align-middle">
+                <div class="d-flex align-items-center">
+                  <div class="ms-2">
+                    <h6 class="mb-0 font-14">{{post.id}}</h6>
+                  </div>
+                </div>
+              </td>
+              <td class="align-middle">{{post.libelle}}</td>
+              <td class="align-middle">
+                <div class="d-flex order-actions w-auto">
+                  <a data-bs-toggle="modal" data-bs-target="#updateModal" (click)="recupBanque(post)">
+                    <i class='bx bxs-edit'></i></a>
+                  <a data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="recupBanque(post)"
+                     class="ms-2"><i class='bx bxs-trash'></i></a>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!--end page wrapper -->
+<!--start overlay-->
+<div class="overlay toggle-icon"></div>
+<!--end overlay-->
+<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+<!--End Back To Top Button-->
+<!--end wrapper-->
+
+<!------------------------Modal Ajout ----------------------------->
+
+<div class="modal fade bd-Users-modal-sm" id="addModal"
+     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-add-banque></app-add-banque>
+</div>
+
+<!------------------------Modal Ajout ----------------------------->
+
+<div class="modal fade bd-Users-modal-sm" id="updateModal"
+     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <app-update-banque [banque]="banqueSelected"></app-update-banque>
+</div>
+
+<!-------------------------Modal Suppression-------------------------------->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <app-delete-banque [banque]="banqueSelected"></app-delete-banque>
+</div>
