@@ -77,6 +77,10 @@ import { ListeVillesComponent } from './Components/Villes/liste-villes/liste-vil
 import { AddVilleComponent } from './Components/Villes/add-ville/add-ville.component';
 import { UpdateVilleComponent } from './Components/Villes/update-ville/update-ville.component';
 import { DeleteVilleComponent } from './Components/Villes/delete-ville/delete-ville.component';
+import { ListeCompteComptableComponent } from './Components/CompteComptable/liste-compte-comptable/liste-compte-comptable.component';
+import { AddCompteComptableComponent } from './Components/CompteComptable/add-compte-comptable/add-compte-comptable.component';
+import { UpdateComptaComptableComponent } from './Components/CompteComptable/update-compta-comptable/update-compta-comptable.component';
+import { DeleteCompteComptableComponent } from './Components/CompteComptable/delete-compte-comptable/delete-compte-comptable.component';
 
 
 @NgModule({
@@ -150,6 +154,10 @@ import { DeleteVilleComponent } from './Components/Villes/delete-ville/delete-vi
     AddVilleComponent,
     UpdateVilleComponent,
     DeleteVilleComponent,
+    ListeCompteComptableComponent,
+    AddCompteComptableComponent,
+    UpdateComptaComptableComponent,
+    DeleteCompteComptableComponent,
   ],
     imports: [
         BrowserModule,
