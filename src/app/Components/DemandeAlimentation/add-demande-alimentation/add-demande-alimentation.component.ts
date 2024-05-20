@@ -2,55 +2,71 @@ import {Component, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {NotificationService} from "../../../Services/notification.service";
-import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
 import {AffaireService} from "../../../Services/affaire.service";
+import {IDemandeAlimentation} from "../../../Services/Interfaces/idemande-alimentation";
+import {ListeDemandeAlimentationComponent} from "../liste-demande-alimentation/liste-demande-alimentation.component";
+import {demandeAlimentationService} from "../../../Services/demande-alimentation.service";
+import {environment} from "../../../../environnements/environment";
+import {TokenStorageService} from "../../../Auth/services/token-storage.service";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
+import {CaisseService} from "../../../Services/caisse.service";
+import {DatePipe} from "@angular/common";
+
 
 @Component({
   selector: 'app-add-demande-alimentation',
   templateUrl: './add-demande-alimentation.component.html',
-  styleUrls: ['./add-demande-alimentation.component.css']
+  styleUrls: ['./add-demande-alimentation.component.css',"./add-demande-alimentation.component.css"],
+  providers: [DatePipe]
 })
 export class AddDemandeAlimentationComponent {
-
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
-  affaires: Iaffaire[]=[];
+  demandeAlimentations: IDemandeAlimentation[]=[];
+  caisses: ICaisse[]=[];
 
-  codeExist: boolean = false;
-  libelleExist: boolean = false;
   constructor(private notifyService: NotificationService,
-              private affaireC:ListeAffairesComponent,
-              private affaireService: AffaireService,
+              private demandeAlimentationC:ListeDemandeAlimentationComponent,
+              private demandeAlimentationService: demandeAlimentationService,
               private formBuilder: FormBuilder,
+              private datePipe: DatePipe,
+              private caisseService:CaisseService,
+              private storageService:TokenStorageService
   ) {
   }
   onMaterialGroupChange(event) {}
 
 
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
+  getAlldemandeAlimentations(){
+    this.demandeAlimentationService.getAll().subscribe(data=>
+      this.demandeAlimentations=data
     );
+  }
+  getCaisses(){
+    this.caisseService.caissesByUser(this.storageService.getUser().id).subscribe(data=>
+      this.caisses=data
+    );
+  }
+  getCurrentDate(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
   }
   onAdd() {
 
-    const libelleExist=  this.affaires.find((aff) => aff.libelle === this.myFormAdd.value.libelle);
-    const codeExist=  this.affaires.find((aff) => aff.code === this.myFormAdd.value.code);
-    if(codeExist){
-      this.notifyService.showError("Ce code affaire existe déjà !!", "Erreur Code");
-    }
-    if(libelleExist){
-      this.notifyService.showError("Ce nom affaire existe déjà !!", "Erreur Nom");
+    if(this.myFormAdd.value.caisse.soldeActuel>environment.minAutorisationDemandeAlimentationCaisse){
+      this.notifyService.showError("Impossible d'effectuer cette demande , Vous plus que "+environment.minAutorisationDemandeAlimentationCaisse
+        +" dirhams sur cette caisse!!", "Erreur Demande Alimentation");
+    }else {
 
-    }
-    if (!codeExist && !libelleExist) {
-
-      this.affaireService.addAffaire(this.myFormAdd.value).subscribe(
+      this.demandeAlimentationService.register(this.myFormAdd.value).subscribe(
         data => {
-          this.notifyService.showSuccess("Affaire ajouté avec succés !!", "Ajout Affaire");
+          this.notifyService.showSuccess("demandeAlimentation ajouté avec succés !!", "Ajout demandeAlimentation");
           this.initmyForm();
           setTimeout(() => {
-            this.affaireC.ngOnInit();
+            this.demandeAlimentationC.ngOnInit();
             this.closebutton.nativeElement.click();
           }, 400);
         });
@@ -60,13 +76,18 @@ export class AddDemandeAlimentationComponent {
 
   private initmyForm() {
     this.myFormAdd = this.formBuilder.group({
-      code:['',Validators.required],
-      libelle: ['',Validators.required],
-      statut:['',Validators.required],
+      dateDemande:[this.datePipe.transform(new Date(), 'yyyy-MM-dd'),Validators.required],
+      caisse:['',Validators.required],
+      etat:['Envoyé'],
+      montantDemande:['',Validators.required],
+      motif:['',Validators.required],
+      type:['',Validators.required],
+      pieceJointe:[''],
     });
   }
   ngOnInit(): void {
-    this.getAllAffaires()
+    this.getAlldemandeAlimentations();
+    this.getCaisses();
     this.initmyForm();
   }
 }

@@ -24,7 +24,6 @@ export class ListeFonctionsComponent  implements OnInit,OnChanges{
   postList(): void {
     this.fonctionService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

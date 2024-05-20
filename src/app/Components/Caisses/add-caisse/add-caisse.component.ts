@@ -1,9 +1,11 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {NotificationService} from "../../../Services/notification.service";
-import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
+import {ListeCaissesComponent} from "../liste-caisses/liste-caisses.component";
+import {CaisseService} from "../../../Services/caisse.service";
 import {AffaireService} from "../../../Services/affaire.service";
+import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 
 @Component({
   selector: 'app-add-caisse',
@@ -14,43 +16,43 @@ export class AddCaisseComponent {
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  caisses: ICaisse[]=[];
   affaires: Iaffaire[]=[];
 
-  codeExist: boolean = false;
-  libelleExist: boolean = false;
   constructor(private notifyService: NotificationService,
-              private affaireC:ListeAffairesComponent,
-              private affaireService: AffaireService,
+              private caisseC:ListeCaissesComponent,
+              private caisseService: CaisseService,
               private formBuilder: FormBuilder,
+              private affaireService:AffaireService
   ) {
   }
   onMaterialGroupChange(event) {}
 
 
+  getAllcaisses(){
+    this.caisseService.getAll().subscribe(data=>
+      this.caisses=data
+    );
+  }
   getAllAffaires(){
     this.affaireService.getAll().subscribe(data=>
       this.affaires=data
     );
   }
   onAdd() {
-
-    const libelleExist=  this.affaires.find((aff) => aff.libelle === this.myFormAdd.value.libelle);
-    const codeExist=  this.affaires.find((aff) => aff.code === this.myFormAdd.value.code);
+    const codeExist=  this.caisses.find((a) => a.affaire.id === this.myFormAdd.value.affaire.id);
     if(codeExist){
-      this.notifyService.showError("Ce code affaire existe déjà !!", "Erreur Code");
+      this.notifyService.showError("Cette caisse existe dejà pour ce chantier !!", "Erreur Caisse");
     }
-    if(libelleExist){
-      this.notifyService.showError("Ce nom affaire existe déjà !!", "Erreur Nom");
 
-    }
-    if (!codeExist && !libelleExist) {
+    if (!codeExist) {
 
-      this.affaireService.addAffaire(this.myFormAdd.value).subscribe(
+      this.caisseService.register(this.myFormAdd.value).subscribe(
         data => {
-          this.notifyService.showSuccess("Affaire ajouté avec succés !!", "Ajout Affaire");
+          this.notifyService.showSuccess("Caisse ajouté avec succés !!", "Ajout caisse");
           this.initmyForm();
           setTimeout(() => {
-            this.affaireC.ngOnInit();
+            this.caisseC.ngOnInit();
             this.closebutton.nativeElement.click();
           }, 400);
         });
@@ -60,12 +62,12 @@ export class AddCaisseComponent {
 
   private initmyForm() {
     this.myFormAdd = this.formBuilder.group({
-      code:['',Validators.required],
-      libelle: ['',Validators.required],
-      statut:['',Validators.required],
+      soldeActuel:['',Validators.required],
+      affaire: ['',Validators.required],
     });
   }
   ngOnInit(): void {
+    this.getAllcaisses()
     this.getAllAffaires()
     this.initmyForm();
   }

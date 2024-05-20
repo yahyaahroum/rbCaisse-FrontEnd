@@ -22,7 +22,6 @@ export class ListeEmployesComponent  implements OnInit,OnChanges{
   postList(): void {
     this.employeService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

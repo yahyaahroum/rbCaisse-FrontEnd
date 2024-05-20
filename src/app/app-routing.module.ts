@@ -14,23 +14,52 @@ import {ListeNaturesComponent} from "./Components/NatureOperation/liste-natures/
 import {ListeBanquesComponent} from "./Components/Banques/liste-banques/liste-banques.component";
 import {ListeAppartementsComponent} from "./Components/Appartements/liste-appartements/liste-appartements.component";
 import {ListeVillesComponent} from "./Components/Villes/liste-villes/liste-villes.component";
+import {
+  ListeCompteComptableComponent
+} from "./Components/CompteComptable/liste-compte-comptable/liste-compte-comptable.component";
+import {ListeCaissesComponent} from "./Components/Caisses/liste-caisses/liste-caisses.component";
+import {ListePaiementLoyeComponent} from "./Components/PaiementLoye/liste-paiement-loye/liste-paiement-loye.component";
+import {
+  ListeDemandeAlimentationComponent
+} from "./Components/DemandeAlimentation/liste-demande-alimentation/liste-demande-alimentation.component";
 
 const routes: Routes = [
 
   { path: 'Login', component: LoginComponent },
-  {path: 'Acceuil', component: AcceuilComponent, canActivate: [ AuthGuard ]},
-  {path: '', component: AcceuilComponent, canActivate: [ AuthGuard ]},
-  {path: 'Utilisateurs', component: ListeUtilisateursComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'Affaires', component: ListeAffairesComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'Employes', component: ListeEmployesComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'Fonctions', component: ListeFonctionsComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'ModesOperations', component: ListeModesComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'NaturesOperations', component: ListeNaturesComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'Banques', component: ListeBanquesComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'Appartements', component: ListeAppartementsComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
-  {path: 'Villes', component: ListeVillesComponent , canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }}
+  {path: 'Acceuil', component: AcceuilComponent,
+    canActivate: [ AuthGuard ]},
+  {path: '', component: AcceuilComponent,
+    canActivate: [ AuthGuard ]},
+  {path: 'Utilisateurs', component: ListeUtilisateursComponent ,
+    canActivate: [ AuthGuard ]},
+  {path: 'Affaires', component: ListeAffairesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Employes', component: ListeEmployesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Fonctions', component: ListeFonctionsComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'ModesOperations', component: ListeModesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'NaturesOperations', component: ListeNaturesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Banques', component: ListeBanquesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Appartements', component: ListeAppartementsComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Villes', component: ListeVillesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'ComptesComptable', component: ListeCompteComptableComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Caisse', component: ListeCaissesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'suiviCaisse', component: ListeCaissesComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'demandeAlimentationCaisse', component: ListeDemandeAlimentationComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
+  {path: 'Loye', component: ListePaiementLoyeComponent ,
+    canActivate: [ AuthGuard ], data: { expectedRoles: ['admin'] }},
 ];
-
+ListeCompteComptableComponent
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

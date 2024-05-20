@@ -23,7 +23,6 @@ export class ListeSuiviCaisseComponent  implements OnInit,OnChanges{
   postList(): void {
     this.affaireService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

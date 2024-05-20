@@ -1,9 +1,16 @@
 import {Component, Input, SimpleChanges, ViewChild} from '@angular/core';
 import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
 import {AffaireService} from "../../../Services/affaire.service";
 import {NotificationService} from "../../../Services/notification.service";
+import {IDemandeAlimentation} from "../../../Services/Interfaces/idemande-alimentation";
+import {ListeDemandeAlimentationComponent} from "../liste-demande-alimentation/liste-demande-alimentation.component";
+import {demandeAlimentationService} from "../../../Services/demande-alimentation.service";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
+import {CaisseService} from "../../../Services/caisse.service";
+import {TokenStorageService} from "../../../Auth/services/token-storage.service";
+import {environment} from "../../../../environnements/environment";
+
 
 @Component({
   selector: 'app-update-demande-alimentation',
@@ -11,80 +18,72 @@ import {NotificationService} from "../../../Services/notification.service";
   styleUrls: ['./update-demande-alimentation.component.css']
 })
 export class UpdateDemandeAlimentationComponent {
-
   @ViewChild('closebutton') closebutton;
   @Input()
-  public affaire:Iaffaire;
+  public demandeAlimentation:IDemandeAlimentation;
   myFormUpdate:FormGroup;
-  affaires: Iaffaire[]=[];
-
-  libelleExist:Iaffaire;
-  codeExist:Iaffaire;
+  caisses: ICaisse[]=[];
   constructor(private formBuilder: FormBuilder,
-              private affaireC:ListeAffairesComponent,
+              private demandeAlimentationC:ListeDemandeAlimentationComponent,
+              private demandeAlimentationService:demandeAlimentationService,
+              private notifyService : NotificationService,
+              private caisseService:CaisseService,
               private affaireService:AffaireService,
-              private notifyService : NotificationService) {}
+              private storageService:TokenStorageService) {}
 
-  onUpdateAffaire() {
-    this.libelleExist=  this.affaires.find((aff) => aff.libelle === (this.myFormUpdate.value.libelle) && (aff.id !=  this.affaire.id));
-    this.codeExist=  this.affaires.find((aff) => (aff.code === this.myFormUpdate.value.code) && (aff.id !=  this.affaire.id));
-    if(this.codeExist){
-      this.notifyService.showError("Ce code d'affaire existe déjà !!", "Erreur Code");
-    }
-    if(this.libelleExist){
-      this.notifyService.showError("Ce nom d'affaire existe déjà !!", "Erreur Nom");
-
-    }
-    if (!this.codeExist && !this.libelleExist) {
-      this.affaireService.updateAffaire(this.myFormUpdate.value, this.affaire.id).subscribe(
+  onUpdatedemandeAlimentation() {
+    if(this.myFormUpdate.value.caisse.soldeActuel>environment.minAutorisationDemandeAlimentationCaisse){
+      this.notifyService.showError("Impossible d'effectuer cette demande , Vous plus que "+environment.minAutorisationDemandeAlimentationCaisse
+        +" dirhams sur cette caisse!!", "Erreur Demande Alimentation");
+    }else {
+      this.myFormUpdate.value.caisse=this.caisses.find((a) => (a.id === this.myFormUpdate.value.caisse));
+      this.demandeAlimentationService.update(this.myFormUpdate.value, this.demandeAlimentation.id).subscribe(
         data => {
           this.notifyService.showSuccess("Affaire modifié avec succés !!", "Modification Affaire");
           this.initmyUpdateForm();
           setTimeout(() => {
-            this.affaireC.ngOnInit();
+            this.demandeAlimentationC.ngOnInit();
             this.closebutton.nativeElement.click();
           }, 400);
         });
 
     }
   }
-
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
+  getCaisses(){
+    this.caisseService.caissesByUser(this.storageService.getUser().id).subscribe(data=>
+      this.caisses=data
     );
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
-    this.affectAffaireForm(this.affaire.id);
-
+    this.affectForm(this.demandeAlimentation.id);
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyUpdateForm();
-    this.affectAffaireForm(this.affaire.id);
+    this.getCaisses();
+    this.affectForm(this.demandeAlimentation.id);
   }
   private initmyUpdateForm() {
     this.myFormUpdate = this.formBuilder.group({
-      code:['',Validators.required],
-      libelle: ['',Validators.required],
-      statut:['',Validators.required],
-
+      caisse:['',Validators.required],
+      montantDemande:['',Validators.required],
+      motif:['',Validators.required],
+      type:['',Validators.required],
     });
 
   }
-  private affectAffaireForm(id:number){
+  private affectForm(id:number){
     this.myFormUpdate.setValue({
-      code: this.affaire.code,
-      libelle:this.affaire.libelle,
-      statut:this.affaire.statut,
+      caisse:this.demandeAlimentation.caisse.id,
+      montantDemande:this.demandeAlimentation.montantDemande,
+      motif:this.demandeAlimentation.motif,
+      type:this.demandeAlimentation.type
     });
-
   }
   onMaterialGroupChange($event: Event) {
 
   }
 }
-
 
 

@@ -1,9 +1,6 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
-import {TokenStorageService} from "../../../Auth/services/token-storage.service";
-import {UtilisateurService} from "../../../Services/utilisateur.service";
 import {CaisseService} from "../../../Services/caisse.service";
-import {AffaireService} from "../../../Services/affaire.service";
-import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
 
 @Component({
   selector: 'app-liste-caisses',
@@ -17,13 +14,11 @@ export class ListeCaissesComponent implements OnInit,OnChanges{
   tableSize: number = 10;
   tableSizes: any = [5, 10, 15, 20];
   pfiltre: any;
-  affaireSelected: any;
-  constructor(private tokenstorage: TokenStorageService,
-              private affaireService: AffaireService,) {}
+  caisseSelected: any;
+  constructor(private caisseService: CaisseService,) {}
   postList(): void {
-    this.affaireService.getAll().subscribe(data=>{
+    this.caisseService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 
@@ -35,8 +30,9 @@ export class ListeCaissesComponent implements OnInit,OnChanges{
     this.postList();
   }
 
-  recupAffaire(affaire: Iaffaire) {
-    this.affaireSelected=affaire;
+  recupCaisse(caisse: ICaisse) {
+    this.caisseSelected=caisse;
   }
+
 }
 

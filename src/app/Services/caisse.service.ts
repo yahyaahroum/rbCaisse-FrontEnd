@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environnements/environment";
 import {ICaisse} from "./Interfaces/icaisse";
+import {Iuser} from "./Interfaces/iuser";
 const AUTH_API = 'api/caisse';
 
 const httpOptions = {
@@ -32,6 +33,8 @@ export class CaisseService {
   delete(id:number){
     return this.http.delete(environment.apiUrl + AUTH_API + '/delete/'+id);
   }
-
+  caissesByUser(id:number): Observable<ICaisse[]>{
+    return this.http.get<ICaisse[]>(environment.apiUrl + AUTH_API + '/caissesByUser/'+id);
+  }
 
 }

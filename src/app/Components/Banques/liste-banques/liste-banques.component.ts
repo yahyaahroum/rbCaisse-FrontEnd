@@ -21,7 +21,6 @@ export class ListeBanquesComponent {
   postList(): void {
     this.banqueService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

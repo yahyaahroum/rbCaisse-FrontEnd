@@ -38,7 +38,6 @@ export class ListeUtilisateursComponent implements OnInit,OnChanges {
   postList(): void {
     this.userService.getAllUsers().subscribe(data => {
       this.POSTS = data;
-      console.log(data);
     })
   }
 

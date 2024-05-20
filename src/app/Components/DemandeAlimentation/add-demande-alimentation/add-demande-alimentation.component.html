@@ -16,32 +16,48 @@
                   <h5 class="mb-0 text-white">Ajout d'une nouvelle affaire</h5>
                 </div>
                 <hr/>
-
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Code Affaire</label>
+                  <label class="col-sm-3 col-form-label">Caisse</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Entrez le code d'affaire"
-                           formControlName="code"
-                           id="code" name="code" required>
+                    <ng-select placeholder="Selectionnez une caisse" formControlName="caisse"
+                               name="caisse" required>
+                      <ng-option *ngFor="let caisse of caisses" [value]="caisse" (change)="onMaterialGroupChange($event)">
+                        {{caisse.affaire.code +' - '+ caisse.affaire.libelle}}</ng-option>
+                    </ng-select>
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Nom Affaire</label>
+                  <label class="col-sm-3 col-form-label">Motif</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Entrez le nom d'affaire"
-                           formControlName="libelle"
-                           id="libelle" name="libelle" required>
+                    <input type="text" class="form-control" placeholder="Entrez le motif du demande"
+                           formControlName="motif"
+                           id="motif" name="motif" required>
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Statut</label>
+                  <label class="col-sm-3 col-form-label">Type</label>
                   <div class="col-sm-9">
-                    <select formControlName="statut" class="form-select">
-                      <option value="Actif">Actif</option>
-                      <option value="Inactif">Inactif</option>
+                    <select formControlName="type" class="form-select">
+                      <option value="Actif">Frais généraux</option>
+                      <option value="Inactif">Projet</option>
                     </select>
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Montant</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez le montant du demande"
+                           formControlName="montantDemande"
+                           id="montantDemande" name="montantDemande" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Piéce Jointe</label>
+                  <div class="col-sm-9">
+                    <input type="file" class="form-control">
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

@@ -8,11 +8,6 @@ import {NotificationService} from "../../../Services/notification.service";
 import {FonctionService} from "../../../Services/fonction.service";
 import {IfonctionEmploye} from "../../../Services/Interfaces/ifonctionEmploye";
 
-
-
-
-
-
 @Component({
   selector: 'app-update-employe',
   templateUrl: './update-employe.component.html',
@@ -30,7 +25,7 @@ export class UpdateEmployeComponent {
               private employeC:ListeEmployesComponent,
               private employeService:EmployeService,
               private notifyService : NotificationService,
-              private fonctionService:FonctionService) {}
+              private fonctionService:FonctionService,) {}
   getAllFonction(){
     this.fonctionService.getAll().subscribe(data=>
       this.listeFonctions=data

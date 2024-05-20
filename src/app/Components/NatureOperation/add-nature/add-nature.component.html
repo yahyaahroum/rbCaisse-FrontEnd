@@ -25,6 +25,16 @@
                            id="libelle" name="libelle" required>
                   </div>
                 </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Compte comptable</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez un compte comptable" formControlName="compteComptable"
+                               name="compteComptable" required>
+                      <ng-option *ngFor="let comptes of comptesCoptable" [value]="comptes" (change)="onMaterialGroupChange($event)">
+                        {{comptes.codeComptable +' - '+ comptes.intitule}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

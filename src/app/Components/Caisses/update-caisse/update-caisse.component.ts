@@ -4,6 +4,13 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
 import {AffaireService} from "../../../Services/affaire.service";
 import {NotificationService} from "../../../Services/notification.service";
+import {INatureOperation} from "../../../Services/Interfaces/inature-operation";
+import {Icomptecomptable} from "../../../Services/Interfaces/icomptecomptable";
+import {NatureOperationService} from "../../../Services/nature-operation.service";
+import {ComptecomptableService} from "../../../Services/comptecomptable.service";
+import {ListeCaissesComponent} from "../liste-caisses/liste-caisses.component";
+import {CaisseService} from "../../../Services/caisse.service";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
 
 @Component({
   selector: 'app-update-caisse',
@@ -11,44 +18,43 @@ import {NotificationService} from "../../../Services/notification.service";
   styleUrls: ['./update-caisse.component.css']
 })
 export class UpdateCaisseComponent {
-
   @ViewChild('closebutton') closebutton;
   @Input()
-  public affaire:Iaffaire;
+  public caisse:ICaisse;
   myFormUpdate:FormGroup;
+  caisses: ICaisse[]=[];
   affaires: Iaffaire[]=[];
-
-  libelleExist:Iaffaire;
-  codeExist:Iaffaire;
   constructor(private formBuilder: FormBuilder,
-              private affaireC:ListeAffairesComponent,
-              private affaireService:AffaireService,
-              private notifyService : NotificationService) {}
+              private natureC:ListeCaissesComponent,
+              private caisseService:CaisseService,
+              private notifyService : NotificationService,
+              private affaireService:AffaireService) {}
 
-  onUpdateAffaire() {
-    this.libelleExist=  this.affaires.find((aff) => aff.libelle === (this.myFormUpdate.value.libelle) && (aff.id !=  this.affaire.id));
-    this.codeExist=  this.affaires.find((aff) => (aff.code === this.myFormUpdate.value.code) && (aff.id !=  this.affaire.id));
-    if(this.codeExist){
-      this.notifyService.showError("Ce code d'affaire existe déjà !!", "Erreur Code");
-    }
-    if(this.libelleExist){
-      this.notifyService.showError("Ce nom d'affaire existe déjà !!", "Erreur Nom");
+  onUpdateCaisse() {
+    const affaireExist=  this.caisses.find((c) => c.affaire.id === (this.myFormUpdate.value.affaire) && (c.id !=  this.caisse.id));
 
+    if(affaireExist){
+      this.notifyService.showError("Cette affaire a dejà une caisse !!", "Erreur Affaire");
     }
-    if (!this.codeExist && !this.libelleExist) {
-      this.affaireService.updateAffaire(this.myFormUpdate.value, this.affaire.id).subscribe(
+    if (!affaireExist) {
+      this.myFormUpdate.value.affaire=this.affaires.find((a) => (a.id === this.myFormUpdate.value.affaire));
+      this.caisseService.update(this.myFormUpdate.value, this.caisse.id).subscribe(
         data => {
           this.notifyService.showSuccess("Affaire modifié avec succés !!", "Modification Affaire");
           this.initmyUpdateForm();
           setTimeout(() => {
-            this.affaireC.ngOnInit();
+            this.natureC.ngOnInit();
             this.closebutton.nativeElement.click();
           }, 400);
         });
 
     }
   }
-
+  getAllCaisses(){
+    this.caisseService.getAll().subscribe(data=>
+      this.caisses=data
+    );
+  }
   getAllAffaires(){
     this.affaireService.getAll().subscribe(data=>
       this.affaires=data
@@ -56,28 +62,28 @@ export class UpdateCaisseComponent {
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
-    this.affectAffaireForm(this.affaire.id);
+    this.affectForm(this.caisse.id);
 
   }
   ngOnInit(): void {
     this.getAllAffaires()
     this.initmyUpdateForm();
-    this.affectAffaireForm(this.affaire.id);
+    this.getAllCaisses();
+    this.affectForm(this.caisse.id);
   }
   private initmyUpdateForm() {
     this.myFormUpdate = this.formBuilder.group({
-      code:['',Validators.required],
-      libelle: ['',Validators.required],
-      statut:['',Validators.required],
+      soldeActuel: ['',Validators.required],
+      affaire: ['',Validators.required],
+
 
     });
 
   }
-  private affectAffaireForm(id:number){
+  private affectForm(id:number){
     this.myFormUpdate.setValue({
-      code: this.affaire.code,
-      libelle:this.affaire.libelle,
-      statut:this.affaire.statut,
+      soldeActuel:this.caisse.soldeActuel,
+      affaire: this.caisse.affaire.id,
     });
 
   }
@@ -85,6 +91,5 @@ export class UpdateCaisseComponent {
 
   }
 }
-
 
 

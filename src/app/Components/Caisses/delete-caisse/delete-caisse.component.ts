@@ -3,6 +3,9 @@ import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {AffaireService} from "../../../Services/affaire.service";
 import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
 import {NotificationService} from "../../../Services/notification.service";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
+import {CaisseService} from "../../../Services/caisse.service";
+import {ListeCaissesComponent} from "../liste-caisses/liste-caisses.component";
 
 @Component({
   selector: 'app-delete-caisse',
@@ -13,22 +16,23 @@ export class DeleteCaisseComponent {
 
   @ViewChild('closebutton') closebutton;
   @Input()
-  public affaire:Iaffaire;
+  public caisse:ICaisse;
 
-  constructor(private affaireService: AffaireService,
-              private affaireC:ListeAffairesComponent,
+  constructor(private caisseService: CaisseService,
+              private caisseC:ListeCaissesComponent,
               private notifyService : NotificationService) {}
 
 
-  deleteUser() {
-    this.affaireService.deleteAffaire(this.affaire.id).subscribe(data=>
-      this.notifyService.showSuccess("Affaire supprimé avec succés !!", "Suppression Affaire")
+  deletecaisse() {
+    this.caisseService.delete(this.caisse.id).subscribe(data=>
+      this.notifyService.showSuccess("Caisse supprimé avec succés !!", "Suppression Caisse")
     );
     setTimeout(() => {
-      this.affaireC.ngOnInit();
+      this.caisseC.ngOnInit();
       this.closebutton.nativeElement.click();
     },  400);
   }
+
 
 }
 

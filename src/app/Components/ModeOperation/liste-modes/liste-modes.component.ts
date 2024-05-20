@@ -23,7 +23,6 @@ export class ListeModesComponent  implements OnInit,OnChanges{
   postList(): void {
     this.modeService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

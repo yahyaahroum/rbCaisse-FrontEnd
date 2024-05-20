@@ -39,6 +39,7 @@
             <tr>
               <th>Id</th>
               <th>Libellé</th>
+              <th>Compte comptable</th>
               <th>Actions</th>
             </tr>
             </thead>
@@ -55,6 +56,7 @@
                 </div>
               </td>
               <td class="align-middle">{{post.libelle}}</td>
+              <td class="align-middle">{{post.compteComptable.codeComptable +' - '+ post.compteComptable.intitule}}</td>
 
               <td class="align-middle">
                 <div class="d-flex order-actions w-auto">

@@ -7,6 +7,7 @@ export interface IDemandeAlimentation {
     dateDemande:Date;
     etat:string;
     motif:string;
+    montantDemande:number;
     pieceJointe:string;
     caisse:ICaisse;
     user:Iuser;

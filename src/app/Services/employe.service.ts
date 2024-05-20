@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environnements/environment";
 import {Ipersonnel} from "./Interfaces/ipersonnel";
+import {TokenStorageService} from "../Auth/services/token-storage.service";
 const AUTH_API = 'api/employe';
 
 const httpOptions = {

@@ -23,7 +23,6 @@ export class ListeAlimentationsComponent {
   postList(): void {
     this.affaireService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

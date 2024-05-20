@@ -23,7 +23,6 @@ export class ListeAppartementsComponent {
   postList(): void {
     this.appartementService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

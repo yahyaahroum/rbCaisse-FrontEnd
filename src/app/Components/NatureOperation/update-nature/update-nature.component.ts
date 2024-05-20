@@ -7,6 +7,8 @@ import {NotificationService} from "../../../Services/notification.service";
 import {INatureOperation} from "../../../Services/Interfaces/inature-operation";
 import {ListeNaturesComponent} from "../liste-natures/liste-natures.component";
 import {NatureOperationService} from "../../../Services/nature-operation.service";
+import {ComptecomptableService} from "../../../Services/comptecomptable.service";
+import {Icomptecomptable} from "../../../Services/Interfaces/icomptecomptable";
 
 @Component({
   selector: 'app-update-nature',
@@ -20,10 +22,12 @@ export class UpdateNatureComponent {
   public nature:INatureOperation;
   myFormUpdate:FormGroup;
   natures: INatureOperation[]=[];
+  comptesCoptable: Icomptecomptable[]=[];
   constructor(private formBuilder: FormBuilder,
               private natureC:ListeNaturesComponent,
               private natureService:NatureOperationService,
-              private notifyService : NotificationService) {}
+              private notifyService : NotificationService,
+              private compteComptableService:ComptecomptableService) {}
 
   onUpdateAffaire() {
     const libelleExist=  this.natures.find((aff) => aff.libelle === (this.myFormUpdate.value.libelle) && (aff.id !=  this.nature.id));
@@ -33,6 +37,7 @@ export class UpdateNatureComponent {
 
     }
     if (!libelleExist) {
+      this.myFormUpdate.value.compteComptable=this.comptesCoptable.find((a) => (a.id === this.myFormUpdate.value.compteComptable));
       this.natureService.update(this.myFormUpdate.value, this.nature.id).subscribe(
         data => {
           this.notifyService.showSuccess("Affaire modifié avec succés !!", "Modification Affaire");
@@ -45,7 +50,11 @@ export class UpdateNatureComponent {
 
     }
   }
-
+  getAllCompteComptable(){
+    this.compteComptableService.getAll().subscribe(data=>
+      this.comptesCoptable=data
+    );
+  }
   getAllAffaires(){
     this.natureService.getAll().subscribe(data=>
       this.natures=data
@@ -59,11 +68,13 @@ export class UpdateNatureComponent {
   ngOnInit(): void {
     this.getAllAffaires()
     this.initmyUpdateForm();
+    this.getAllCompteComptable();
     this.affectForm(this.nature.id);
   }
   private initmyUpdateForm() {
     this.myFormUpdate = this.formBuilder.group({
       libelle: ['',Validators.required],
+      compteComptable: ['',Validators.required],
 
 
     });
@@ -72,6 +83,7 @@ export class UpdateNatureComponent {
   private affectForm(id:number){
     this.myFormUpdate.setValue({
       libelle:this.nature.libelle,
+      compteComptable: this.nature.compteComptable.id,
 
     });
 

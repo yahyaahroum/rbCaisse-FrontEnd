@@ -21,7 +21,6 @@ export class ListeAffairesComponent implements OnInit,OnChanges{
   postList(): void {
     this.affaireService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

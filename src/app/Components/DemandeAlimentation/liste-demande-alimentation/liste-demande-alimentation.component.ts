@@ -1,8 +1,8 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
-import {TokenStorageService} from "../../../Auth/services/token-storage.service";
 import {demandeAlimentationService} from "../../../Services/demande-alimentation.service";
-import {AffaireService} from "../../../Services/affaire.service";
-import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
+import {IDemandeAlimentation} from "../../../Services/Interfaces/idemande-alimentation";
+
+
 
 
 @Component({
@@ -17,13 +17,12 @@ export class ListeDemandeAlimentationComponent  implements OnInit,OnChanges{
   tableSize: number = 10;
   tableSizes: any = [5, 10, 15, 20];
   pfiltre: any;
-  affaireSelected: any;
-  constructor(private tokenstorage: TokenStorageService,
-              private affaireService: AffaireService,) {}
+  demandeAlimentationSelected: any;
+  constructor(private demandeAlimentationService: demandeAlimentationService,) {}
   postList(): void {
-    this.affaireService.getAll().subscribe(data=>{
+    this.demandeAlimentationService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
+      console.log(this.POSTS);
     })
   }
 
@@ -35,8 +34,9 @@ export class ListeDemandeAlimentationComponent  implements OnInit,OnChanges{
     this.postList();
   }
 
-  recupAffaire(affaire: Iaffaire) {
-    this.affaireSelected=affaire;
+  recupdemandeAlimentation(demandeAlimentation: IDemandeAlimentation) {
+    this.demandeAlimentationSelected=demandeAlimentation;
   }
+
 }
 

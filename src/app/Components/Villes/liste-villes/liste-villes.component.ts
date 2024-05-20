@@ -19,7 +19,6 @@ export class ListeVillesComponent {
   postList(): void {
     this.villeService.getAll().subscribe(data=>{
       this.POSTS=data;
-      console.log(data);
     })
   }
 

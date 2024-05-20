@@ -4,6 +4,8 @@ import {NotificationService} from "../../../Services/notification.service";
 import {INatureOperation} from "../../../Services/Interfaces/inature-operation";
 import {NatureOperationService} from "../../../Services/nature-operation.service";
 import {ListeNaturesComponent} from "../liste-natures/liste-natures.component";
+import {Icomptecomptable} from "../../../Services/Interfaces/icomptecomptable";
+import {ComptecomptableService} from "../../../Services/comptecomptable.service";
 
 @Component({
   selector: 'app-add-nature',
@@ -15,10 +17,12 @@ export class AddNatureComponent {
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
   natures: INatureOperation[]=[];
+  comptesCoptable: Icomptecomptable[]=[];
   constructor(private notifyService: NotificationService,
               private natureC:ListeNaturesComponent,
               private natureService: NatureOperationService,
               private formBuilder: FormBuilder,
+              private compteComptableService:ComptecomptableService
   ) {
   }
   onMaterialGroupChange(event) {}
@@ -27,6 +31,11 @@ export class AddNatureComponent {
   getAllnatures(){
     this.natureService.getAll().subscribe(data=>
       this.natures=data
+    );
+  }
+  getAllCompteComptable(){
+    this.compteComptableService.getAll().subscribe(data=>
+      this.comptesCoptable=data
     );
   }
   onAdd() {
@@ -55,10 +64,12 @@ export class AddNatureComponent {
   private initmyForm() {
     this.myFormAdd = this.formBuilder.group({
       libelle: ['',Validators.required],
+      compteComptable: ['',Validators.required],
     });
   }
   ngOnInit(): void {
-    this.getAllnatures()
+    this.getAllnatures();
+    this.getAllCompteComptable();
     this.initmyForm();
   }
 }

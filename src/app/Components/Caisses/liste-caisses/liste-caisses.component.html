@@ -24,22 +24,22 @@
       <div class="card-body">
         <div class="d-lg-flex align-items-center mb-4 gap-3">
           <div class="position-relative">
-            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une affaire..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une caisse..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
           </div>
           <div class="ms-auto">
             <a type="Button" class="btn btn-light radius-30 mt-2 mt-lg-0"
                data-bs-toggle="modal" data-bs-target="#addModal">
-              <i class="bx bxs-plus-square" ></i>Ajouter une affaire</a>
+              <i class="bx bxs-plus-square" ></i>Ajouter une caisse</a>
           </div>
 
         </div>
         <div class="table-responsive">
-          <table class="table mb-0">
+          <table class="table mb-0 table-hover">
             <thead class="table-light">
             <tr>
               <th>Id</th>
-              <th>Code</th>
-              <th>Désignation</th>
+              <th>Affaire</th>
+              <th>Solde Actuel</th>
               <th>Statut</th>
               <th>Actions</th>
             </tr>
@@ -49,24 +49,23 @@
                      itemsPerPage: tableSize,
                      currentPage: page,
                      totalItems: count}; let i = index ">
-              <td>
+              <td class="align-middle">
                 <div class="d-flex align-items-center">
                   <div class="ms-2">
                     <h6 class="mb-0 font-14">{{post.id}}</h6>
                   </div>
                 </div>
               </td>
-              <td>{{post.code}}</td>
-              <td>{{post.libelle}}</td>
-              <td *ngIf="post.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.statut}}</span></h6></td>
-              <td *ngIf="post.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.statut}}</span></h6></td>
-
-              <td>
+              <td class="align-middle">{{post.affaire.code +' - '+post.affaire.libelle}}</td>
+              <td class="align-middle">{{post.soldeActuel}}</td>
+              <td  class="align-middle col-md-3" *ngIf="post.affaire.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.affaire.statut}}</span></h6></td>
+              <td  class="align-middle col-md-3" *ngIf="post.affaire.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.affaire.statut}}</span></h6></td>
+              <td class="align-middle">
                 <div class="d-flex order-actions w-auto">
-                  <a data-bs-toggle="modal" data-bs-target="#updateModal" (click)="recupAffaire(post)"
-                     class="ms-3"><i class='bx bxs-edit'></i></a>
-                  <a data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="recupAffaire(post)"
-                     class="ms-3"><i class='bx bxs-trash'></i></a>
+                  <a data-bs-toggle="modal" data-bs-target="#updateModal" (click)="recupCaisse(post)">
+                    <i class='bx bxs-edit'></i></a>
+                  <a data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="recupCaisse(post)"
+                     class="ms-2"><i class='bx bxs-trash'></i></a>
                 </div>
               </td>
             </tr>
@@ -92,17 +91,17 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-affaire></app-add-affaire>
+  <app-add-caisse></app-add-caisse>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-update-affaire [affaire]="affaireSelected"></app-update-affaire>
+  <app-update-caisse [caisse]="caisseSelected"></app-update-caisse>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-  <app-delete-affaire [affaire]="affaireSelected"></app-delete-affaire>
+  <app-delete-caisse [caisse]="caisseSelected"></app-delete-caisse>
 </div>

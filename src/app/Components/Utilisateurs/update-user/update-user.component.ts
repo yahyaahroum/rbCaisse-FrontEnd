@@ -57,14 +57,9 @@ export class UpdateUserComponent {
       this.userservice.updateUser(this.myFormUpdate.value, this.user.id).subscribe(
         data => {
           this.myFormUpdate.value.listeRoles.forEach(a => {
-            this.userservice.addRoles(this.user.id, a).subscribe(role =>
-              console.log('Roles : ' + role)
-            );
+            this.userservice.addRoles(this.user.id, a).subscribe();
             this.myFormUpdate.value.listeAffaires.forEach(aff => {
-              console.log('aff : ' + aff);
-              this.userservice.addAffairesToUser(this.user.id, aff).subscribe(affaire =>
-                console.log('Affaires : ' + affaire)
-              );
+              this.userservice.addAffairesToUser(this.user.id, aff).subscribe();
             });
             // alert('Utilisateur modifié avec succés');
             this.notifyService.showSuccess("Utilisateur modifié avec succés !!", "Modification Utilisateur");

@@ -26,7 +26,7 @@ export class UtilisateurService {
     addRoles(id,role) {
       return this.http.post(environment.apiUrl + AUTH_API + '/addRoles/'+id, role, httpOptions);
     }
-    addAffairesToUser(id,affaire){
+    addAffairesToUser(id:number,affaire:string){
       return this.http.post(environment.apiUrl + AUTH_API + '/addAffaires/'+id, affaire, httpOptions);
     }
     getAffairesByUser(id:number){
