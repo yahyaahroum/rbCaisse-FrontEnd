@@ -21,7 +21,9 @@ export class UpdateNatureComponent {
   @Input()
   public nature:INatureOperation;
   myFormUpdate:FormGroup;
+  @Input()
   natures: INatureOperation[]=[];
+  @Input()
   comptesCoptable: Icomptecomptable[]=[];
   constructor(private formBuilder: FormBuilder,
               private natureC:ListeNaturesComponent,
@@ -50,25 +52,13 @@ export class UpdateNatureComponent {
 
     }
   }
-  getAllCompteComptable(){
-    this.compteComptableService.getAll().subscribe(data=>
-      this.comptesCoptable=data
-    );
-  }
-  getAllAffaires(){
-    this.natureService.getAll().subscribe(data=>
-      this.natures=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectForm(this.nature.id);
 
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyUpdateForm();
-    this.getAllCompteComptable();
     this.affectForm(this.nature.id);
   }
   private initmyUpdateForm() {

@@ -17,6 +17,7 @@ export class UpdateComptaComptableComponent {
   @Input()
   public compteComptable:Icomptecomptable;
   myFormUpdate:FormGroup;
+  @Input()
   compteComptables: Icomptecomptable[]=[];
 
   constructor(private formBuilder: FormBuilder,
@@ -46,19 +47,12 @@ export class UpdateComptaComptableComponent {
 
     }
   }
-
-  getAllAffaires(){
-    this.compteComptableService.getAll().subscribe(data=>
-      this.compteComptables=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectcompteComptableForm(this.compteComptable.id);
 
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyUpdateForm();
     this.affectcompteComptableForm(this.compteComptable.id);
   }

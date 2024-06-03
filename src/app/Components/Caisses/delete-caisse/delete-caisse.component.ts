@@ -23,7 +23,7 @@ export class DeleteCaisseComponent {
               private notifyService : NotificationService) {}
 
 
-  deletecaisse() {
+  deletePaiement() {
     this.caisseService.delete(this.caisse.id).subscribe(data=>
       this.notifyService.showSuccess("Caisse supprimé avec succés !!", "Suppression Caisse")
     );

@@ -1,6 +1,8 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import {EmployeService} from "../../../Services/employe.service";
 import {Ipersonnel} from "../../../Services/Interfaces/ipersonnel";
+import {FonctionService} from "../../../Services/fonction.service";
+import {IfonctionEmploye} from "../../../Services/Interfaces/ifonctionEmploye";
 
 
 
@@ -18,25 +20,36 @@ export class ListeEmployesComponent  implements OnInit,OnChanges{
   tableSizes: any = [5, 10, 15, 20];
   pfiltre: any;
   employeSelected: any;
-  constructor(private employeService: EmployeService,) {}
+  listeFonctions:IfonctionEmploye[]=[];
+  constructor(private employeService: EmployeService,
+              private fonctionService:FonctionService) {}
   postList(): void {
     this.employeService.getAll().subscribe(data=>{
       this.POSTS=data;
     })
   }
-
+  getAllFonction(){
+    this.fonctionService.getAll().subscribe(data=>
+      this.listeFonctions=data
+    );
+  }
   ngOnChanges(): void {
     this.postList();
   }
 
   ngOnInit(): void {
     this.postList();
+    this.getAllFonction();
   }
 
   recupEmploye(employe: Ipersonnel) {
     this.employeSelected=employe;
   }
 
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
 
+  }
 }
 

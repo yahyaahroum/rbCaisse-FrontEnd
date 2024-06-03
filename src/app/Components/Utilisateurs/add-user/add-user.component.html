@@ -87,7 +87,7 @@
                      <ng-select  placeholder="Selectionnez un role" [multiple]="true" formControlName="listeRoles"
                                 name="selectName">
 
-                       <ng-option *ngFor="let role of roles" [value]="role.name" (change)="onMaterialGroupChange($event)">
+                       <ng-option *ngFor="let role of listeRoles" [value]="role.name" (change)="onMaterialGroupChange($event)">
                          {{role.name}}</ng-option>
                      </ng-select>
                 </div>
@@ -98,7 +98,7 @@
                 <div class="col-sm-9">
                   <ng-select placeholder="Selectionnez une affaire" [multiple]="true" formControlName="listeAffaires"
                              name="listeAffaires">
-                    <ng-option *ngFor="let affaire of affaires" [value]="affaire.code" (change)="onMaterialGroupChange($event)">
+                    <ng-option *ngFor="let affaire of listeAffaires" [value]="affaire.code" (change)="onMaterialGroupChange($event)">
                       {{affaire.code+' - '+affaire.libelle}}</ng-option>
                   </ng-select>
                 </div>

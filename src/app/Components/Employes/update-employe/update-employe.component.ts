@@ -19,18 +19,17 @@ export class UpdateEmployeComponent {
   @Input()
   public employe:Ipersonnel;
   myFormUpdate:FormGroup;
+  @Input()
   employes: Ipersonnel[]=[];
+  @Input()
   listeFonctions:IfonctionEmploye[]=[];
   constructor(private formBuilder: FormBuilder,
               private employeC:ListeEmployesComponent,
               private employeService:EmployeService,
               private notifyService : NotificationService,
               private fonctionService:FonctionService,) {}
-  getAllFonction(){
-    this.fonctionService.getAll().subscribe(data=>
-      this.listeFonctions=data
-    );
-  }
+
+
   onUpdate() {
     const matriculeExist=  this.employes.find((emp) => emp.matricule === (this.myFormUpdate.value.matricule) && (emp.id !=  this.employe.id));
     const nomExist=  this.employes.find((emp) => ((emp.nom === this.myFormUpdate.value.nom) && (emp.nom === this.myFormUpdate.value.prenom)) && (emp.id !=  this.employe.id));
@@ -56,20 +55,13 @@ export class UpdateEmployeComponent {
     }
   }
 
-  getAllemployes(){
-    this.employeService.getAll().subscribe(data=>
-      this.employes=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectemployeForm(this.employe.id);
 
   }
   ngOnInit(): void {
-    this.getAllemployes()
     this.initmyUpdateForm();
-    this.getAllFonction();
     this.affectemployeForm(this.employe.id);
   }
   private initmyUpdateForm() {
@@ -88,7 +80,6 @@ export class UpdateEmployeComponent {
       prenom:this.employe.prenom,
       fonction:this.employe.fonction.id,
     });
-
   }
   onMaterialGroupChange($event: Event) {
 

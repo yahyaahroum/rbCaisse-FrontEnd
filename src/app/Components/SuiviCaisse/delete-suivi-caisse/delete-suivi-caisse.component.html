@@ -7,9 +7,7 @@
     </div>
     <form name="form" (ngSubmit)="deleteUser()">
       <div class="modal-body fs-6">
-
-        Voulez vous supprimer :
-        <strong *ngIf="affaire!=null">{{affaire.code + ' '+affaire.libelle}}</strong>
+        Voulez vous supprimer cette dépense:
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" #closebutton data-bs-dismiss="modal">Fermer</button>

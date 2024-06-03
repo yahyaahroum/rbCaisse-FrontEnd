@@ -4,8 +4,8 @@ export interface IPaiementEauElec {
     id:number;
     type:string;
     montant:number;
+    numeroFacture :string;
     datePaiement:Date;
-    moisFacture:number;
-    anneeFacture:number;
+    dateFacture:string,
     appartement:IAppartement;
 }

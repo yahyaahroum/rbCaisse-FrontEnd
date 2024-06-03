@@ -37,9 +37,19 @@
                   <label class="col-sm-3 col-form-label">Statut</label>
                   <div class="col-sm-9">
                     <select formControlName="statut" class="form-select">
-                      <option value="Actif">Actif</option>
+                      <option value="Actif" selected>Actif</option>
                       <option value="Inactif">Inactif</option>
                     </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Caisse</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez une caisse" formControlName="caisse"
+                               name="caisse" required>
+                      <ng-option *ngFor="let caisse of caisses" [value]="caisse" (change)="onMaterialGroupChange($event)">
+                        {{caisse.nomCaisse}}</ng-option>
+                    </ng-select>
                   </div>
                 </div>
               </div>

@@ -38,5 +38,10 @@ export class ListeFonctionsComponent  implements OnInit,OnChanges{
   recupFonction(fonction: IfonctionEmploye) {
     this.fonctionSelected=fonction;
   }
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
+
+  }
 }
 

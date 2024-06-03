@@ -7,13 +7,13 @@
   <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="breadcrumb-title pe-3">Caisse</div>
       <div class="ps-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Liste Utilisateurs</li>
+            <li class="breadcrumb-item active" aria-current="page">Liste Caisses</li>
           </ol>
         </nav>
       </div>
@@ -38,7 +38,7 @@
             <thead class="table-light">
             <tr>
               <th>Id</th>
-              <th>Affaire</th>
+              <th>Nom Caisse</th>
               <th>Solde Actuel</th>
               <th>Statut</th>
               <th>Actions</th>
@@ -56,10 +56,10 @@
                   </div>
                 </div>
               </td>
-              <td class="align-middle">{{post.affaire.code +' - '+post.affaire.libelle}}</td>
+              <td class="align-middle">{{post.nomCaisse}}</td>
               <td class="align-middle">{{post.soldeActuel}}</td>
-              <td  class="align-middle col-md-3" *ngIf="post.affaire.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.affaire.statut}}</span></h6></td>
-              <td  class="align-middle col-md-3" *ngIf="post.affaire.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.affaire.statut}}</span></h6></td>
+              <td  class="align-middle col-md-3" *ngIf="post.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.statut}}</span></h6></td>
+              <td  class="align-middle col-md-3" *ngIf="post.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.statut}}</span></h6></td>
               <td class="align-middle">
                 <div class="d-flex order-actions w-auto">
                   <a data-bs-toggle="modal" data-bs-target="#updateModal" (click)="recupCaisse(post)">
@@ -71,6 +71,15 @@
             </tr>
             </tbody>
           </table>
+          <br>
+          <br>
+          <div *ngIf="POSTS.length>tableSize" class="pagination justify-content-center">
+            <pagination-controls
+              previousLabel="Précedent"
+              nextLabel="Suivant"
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>
@@ -91,14 +100,15 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-caisse></app-add-caisse>
+  <app-add-caisse [caisses]="POSTS"></app-add-caisse>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-update-caisse [caisse]="caisseSelected"></app-update-caisse>
+  <app-update-caisse [caisse]="caisseSelected"
+                     [caisses]="POSTS"></app-update-caisse>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->

@@ -16,32 +16,97 @@
                   <h5 class="mb-0 text-white">Ajout d'une nouvelle affaire</h5>
                 </div>
                 <hr/>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Caisse</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez une affaire" formControlName="caisse"
+                               name="caisse" required>
+                      <ng-option *ngFor="let caisse of caisses" [value]="caisse" [disabled]="caisse.soldeActuel===0" (change)="onMaterialGroupChange($event)">
+                        {{caisse.nomCaisse}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Date Dépense</label>
+                  <div class="col-sm-9">
+                    <input type="date" class="form-control" placeholder="Entrez la date"
+                           formControlName="dateDepense"
+                           id="dateDepense" name="dateDepense" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Désignation</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez la désignation"
+                           formControlName="designation"
+                           id="designation" name="designation" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Numéro Piéce</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez le numéro de piéce"
+                           formControlName="numeroPiece"
+                           id="numeroPiece" name="numeroPiece">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Montant</label>
+                  <div class="col-sm-9">
+                    <input type="number" class="form-control" placeholder="Entrez le montant"
+                           formControlName="montant"
+                           id="montant" name="montant" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Affaire</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez une affaire" formControlName="affaireDepense"
+                               name="affaireDepense" required>
+                      <ng-option *ngFor="let affaire of affaires" [value]="affaire" (change)="onMaterialGroupChange($event)">
+                        {{affaire.code +' - '+ affaire.libelle}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Nature Opération</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez une nature" formControlName="natureOperation"
+                               name="natureOperation" required>
+                      <ng-option *ngFor="let nature of naturesOperations" [value]="nature" (change)="onMaterialGroupChange($event)">
+                        {{nature.compteComptable.codeComptable +' - '+ nature.libelle}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Mode Opération</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez un mode" formControlName="modeOperation"
+                               name="modeOperation" required>
+                      <ng-option *ngFor="let mode of modesOperations" [value]="mode" (change)="onMaterialGroupChange($event)">
+                        {{mode.libelle}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Employé</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez un employé" formControlName="employeDepense"
+                               name="employeDepense" required>
+                      <ng-option *ngFor="let employe of employes" [value]="employe" (change)="onMaterialGroupChange($event)">
+                        {{employe.nom +' '+ employe.prenom}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Piéce Jointe</label>
+                  <div class="col-sm-9">
+                    <input type="file" class="form-control" (change)="selectFile($event)"
+                           formControlName="pieceJointe">
+                  </div>
+                </div>
 
-                <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Code Affaire</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Entrez le code d'affaire"
-                           formControlName="code"
-                           id="code" name="code" required>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Nom Affaire</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Entrez le nom d'affaire"
-                           formControlName="libelle"
-                           id="libelle" name="libelle" required>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Statut</label>
-                  <div class="col-sm-9">
-                    <select formControlName="statut" class="form-select">
-                      <option value="Actif">Actif</option>
-                      <option value="Inactif">Inactif</option>
-                    </select>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>

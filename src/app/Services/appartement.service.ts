@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environnements/environment";
 import {IAppartement} from "./Interfaces/iappartement";
+import {Iaffaire} from "./Interfaces/iaffaire";
 const AUTH_API = 'api/appartement';
 
 const httpOptions = {
@@ -19,6 +20,9 @@ export class AppartementService {
 
   getAll(): Observable<IAppartement[]> {
     return this.http.get<IAppartement[]>(environment.apiUrl + AUTH_API + '/getAll');
+  }
+  getAppartementsByAffaire(affaire:Iaffaire): Observable<IAppartement[]> {
+    return this.http.post<IAppartement[]>(environment.apiUrl + AUTH_API + '/getAppartementsByAffaire',affaire,httpOptions);
   }
   getById(id:number):Observable<IAppartement>{
     return this.http.get<IAppartement>(environment.apiUrl + AUTH_API + '/findById/'+id);

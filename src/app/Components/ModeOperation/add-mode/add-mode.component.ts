@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {NotificationService} from "../../../Services/notification.service";
@@ -16,8 +16,8 @@ import {IModeOperation} from "../../../Services/Interfaces/imode-operation";
 export class AddModeComponent {
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  @Input()
   modes: IModeOperation[]=[];
-  codeExist: boolean = false;
   libelleExist: boolean = false;
   constructor(private notifyService: NotificationService,
               private modeC:ListeModesComponent,
@@ -27,22 +27,14 @@ export class AddModeComponent {
   }
   onMaterialGroupChange(event) {}
 
-
-  getAllModes(){
-    this.modeService.getAll().subscribe(data=>
-      this.modes=data
-    );
-  }
   onAdd() {
 
     const libelleExist=  this.modes.find((mo) => mo.libelle === this.myFormAdd.value.libelle);
 
     if(libelleExist){
       this.notifyService.showError("Ce mode existe déjà !!", "Erreur Nom");
-
     }
     if (!libelleExist) {
-
       this.modeService.register(this.myFormAdd.value).subscribe(
         data => {
           this.notifyService.showSuccess("Mode ajouté avec succés !!", "Ajout Mode");
@@ -62,7 +54,6 @@ export class AddModeComponent {
     });
   }
   ngOnInit(): void {
-    this.getAllModes()
     this.initmyForm();
   }
 }

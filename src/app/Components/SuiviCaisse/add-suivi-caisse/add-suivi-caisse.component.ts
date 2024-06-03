@@ -1,73 +1,104 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {NotificationService} from "../../../Services/notification.service";
 import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
 import {AffaireService} from "../../../Services/affaire.service";
+import {NatureOperationService} from "../../../Services/nature-operation.service";
+import {CaisseService} from "../../../Services/caisse.service";
+import {TokenStorageService} from "../../../Auth/services/token-storage.service";
+import {ModeOperationService} from "../../../Services/mode-operation.service";
+import {EmployeService} from "../../../Services/employe.service";
+import {INatureOperation} from "../../../Services/Interfaces/inature-operation";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
+import {Ipersonnel} from "../../../Services/Interfaces/ipersonnel";
+import {IModeOperation} from "../../../Services/Interfaces/imode-operation";
+import {ListeSuiviCaisseComponent} from "../liste-suivi-caisse/liste-suivi-caisse.component";
+import {SuiviCaisseService} from "../../../Services/suivi-caisse.service";
+import {Affaire} from "../../../Services/Classes/affaire";
+import {DatePipe} from "@angular/common";
+import {FileUploadService} from "../../../Services/file-upload.service";
 
 @Component({
   selector: 'app-add-suivi-caisse',
   templateUrl: './add-suivi-caisse.component.html',
-  styleUrls: ['./add-suivi-caisse.component.css']
+  styleUrls: ['./add-suivi-caisse.component.css'],
+  providers: [DatePipe]
 })
 export class AddSuiviCaisseComponent {
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  @Input()
   affaires: Iaffaire[]=[];
+  @Input()
+  naturesOperations:INatureOperation[]=[];
+  @Input()
+  caisses:ICaisse[]=[];
+  @Input()
+  employes:Ipersonnel[]=[];
+  @Input()
+  modesOperations:IModeOperation[]=[];
+  fileSelected:any;
 
   codeExist: boolean = false;
   libelleExist: boolean = false;
-  constructor(private notifyService: NotificationService,
-              private affaireC:ListeAffairesComponent,
-              private affaireService: AffaireService,
-              private formBuilder: FormBuilder,
-  ) {
+  constructor(private formBuilder: FormBuilder,
+              private suiviCaisseService:SuiviCaisseService,
+              private notifyService : NotificationService,
+              private suiviCaisseC:ListeSuiviCaisseComponent) {
   }
   onMaterialGroupChange(event) {}
-
-
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
-    );
-  }
   onAdd() {
-
-    const libelleExist=  this.affaires.find((aff) => aff.libelle === this.myFormAdd.value.libelle);
-    const codeExist=  this.affaires.find((aff) => aff.code === this.myFormAdd.value.code);
-    if(codeExist){
-      this.notifyService.showError("Ce code affaire existe déjà !!", "Erreur Code");
-    }
-    if(libelleExist){
-      this.notifyService.showError("Ce nom affaire existe déjà !!", "Erreur Nom");
-
-    }
-    if (!codeExist && !libelleExist) {
-
-      this.affaireService.addAffaire(this.myFormAdd.value).subscribe(
+      this.suiviCaisseService.register(this.myFormAdd.value).subscribe(
         data => {
-          this.notifyService.showSuccess("Affaire ajouté avec succés !!", "Ajout Affaire");
+          this.notifyService.showSuccess("Dépense ajouté avec succés !!", "Suivi Caisse");
           this.initmyForm();
+          if(this.fileSelected){
+            this.saveFile(data.id);
+          }
+
           setTimeout(() => {
-            this.affaireC.ngOnInit();
+            this.fileSelected=[];
+            this.suiviCaisseC.ngOnInit();
             this.closebutton.nativeElement.click();
           }, 400);
         });
 
-    }
+
   }
 
   private initmyForm() {
     this.myFormAdd = this.formBuilder.group({
-      code:['',Validators.required],
-      libelle: ['',Validators.required],
-      statut:['',Validators.required],
+      dateDepense:['',Validators.required],
+      designation: ['',Validators.required],
+      numeroPiece:['',Validators.required],
+      montant:['',Validators.required],
+      caisse:['',Validators.required],
+      pieceJointe:[''],
+      natureOperation:['',Validators.required],
+      affaireDepense:['',Validators.required],
+      modeOperation:['',Validators.required],
+      employeDepense:['',Validators.required],
     });
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyForm();
   }
+
+  selectFile(event: any): void {
+    this.fileSelected = event.target.files[0];
+  }
+
+  saveFileByIdSuivi(id:number,file:File) {
+    this.suiviCaisseService.saveFileByIdSuiviCaisse(id, file).subscribe(data => {
+    });
+  }
+  saveFile(id:number){
+        setTimeout(() => {
+          this.saveFileByIdSuivi(id,this.fileSelected);
+        },  100);
+        this.closebutton.nativeElement.click();
+    }
 }
 

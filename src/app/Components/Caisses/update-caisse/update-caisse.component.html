@@ -17,13 +17,11 @@
                 </div>
                 <hr/>
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Affaire</label>
+                  <label class="col-sm-3 col-form-label">Nom Caisse</label>
                   <div class="col-sm-9">
-                    <ng-select placeholder="Selectionnez une affaire" formControlName="affaire"
-                               name="affaire" required>
-                      <ng-option *ngFor="let affaire of affaires" [value]="affaire.id" (change)="onMaterialGroupChange($event)">
-                        {{affaire.code +' - '+ affaire.libelle}}</ng-option>
-                    </ng-select>
+                    <input type="text" class="form-control" placeholder="Entrez le nom de caisse"
+                           formControlName="nomCaisse"
+                           id="nomCaisse" name="nomCaisse" required>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -32,6 +30,15 @@
                     <input type="number" class="form-control" placeholder="Entrez le solde actuel"
                            formControlName="soldeActuel"
                            id="soldeActuel" name="soldeActuel" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Statut</label>
+                  <div class="col-sm-9">
+                    <select formControlName="statut" class="form-select" required>
+                      <option value="Actif" selected>Actif</option>
+                      <option value="Inactif">Inactif</option>
+                    </select>
                   </div>
                 </div>
 

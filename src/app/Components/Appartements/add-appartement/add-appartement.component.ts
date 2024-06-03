@@ -1,14 +1,12 @@
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
 import {NotificationService} from "../../../Services/notification.service";
-import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
-import {AffaireService} from "../../../Services/affaire.service";
-import {Iville} from "../../../Services/Interfaces/iville";
-import {villeService} from "../../../Services/ville.service";
 import {ListeAppartementsComponent} from "../liste-appartements/liste-appartements.component";
 import {AppartementService} from "../../../Services/appartement.service";
 import {IAppartement} from "../../../Services/Interfaces/iappartement";
+import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
+import {Affaire} from "../../../Services/Classes/affaire";
+import {AffaireService} from "../../../Services/affaire.service";
 
 @Component({
   selector: 'app-add-appartement',
@@ -19,7 +17,9 @@ export class AddAppartementComponent implements OnInit,OnChanges{
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
-  villes: Iville[]=[];
+  @Input()
+  affaires: Iaffaire[]=[];
+  @Input()
   appartements: IAppartement[]=[];
 
   codeExist: boolean = false;
@@ -28,22 +28,13 @@ export class AddAppartementComponent implements OnInit,OnChanges{
               private appartementC:ListeAppartementsComponent,
               private appartementService:AppartementService,
               private formBuilder: FormBuilder,
-              private villeService:villeService
+              private affaireService:AffaireService
   ) {
   }
   onMaterialGroupChange(event) {}
 
 
-  getAllVilles(){
-    this.villeService.getAll().subscribe(data=>
-      this.villes=data
-    );
-  }
-  getAllAppartements(){
-    this.appartementService.getAll().subscribe(data=>
-      this.appartements=data
-    );
-  }
+
   onAdd() {
 
     const cmpteauExist=  this.appartements.find((app) => app.compteurEau === this.myFormAdd.value.compteurEau);
@@ -81,19 +72,15 @@ export class AddAppartementComponent implements OnInit,OnChanges{
       compteurEau: ['',Validators.required],
       compteurElectricite:['',Validators.required],
       montantLoye:['',Validators.required],
-      ville:['',Validators.required],
+      affaire:['',Validators.required],
     });
   }
   ngOnInit(): void {
     this.initmyForm();
-    this.getAllVilles();
-    this.getAllAppartements();
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getAllVilles();
-    this.getAllAppartements();
-    alert('fgdsdfs');
   }
 }
 

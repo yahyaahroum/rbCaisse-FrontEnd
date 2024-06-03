@@ -31,5 +31,20 @@ export class SuiviCaisseService {
   delete(id:number){
     return this.http.delete(environment.apiUrl + AUTH_API + '/delete/'+id);
   }
+  saveFileByIdSuiviCaisse(id:number,file: File):Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post(environment.apiUrl+AUTH_API+'/savePjSuiviCaisseById/'+id, formData, { headers });
+  }
+  upload(file: File):Observable<any> {
 
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post(environment.apiUrl + AUTH_API+'/upload', formData, { headers });
+  }
 }

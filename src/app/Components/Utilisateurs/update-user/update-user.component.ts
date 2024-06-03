@@ -19,9 +19,12 @@ export class UpdateUserComponent {
   @Input()
   public user:Iuser;
   myFormUpdate:FormGroup;
-  listeRoles: []=[];
-  roles:Irole[]=[];
-  affaires: Iaffaire[]=[];
+  @Input()
+  listeAffaires: Iaffaire[] = [];
+  @Input()
+  listeRoles: Irole[] = [];
+  @Input()
+  Users:Iuser[]=[];
   listRolesUser:string[]=[];
   listAffairesUser:string[]=[];
   usernameExist:boolean=false;
@@ -73,24 +76,12 @@ export class UpdateUserComponent {
       );
     }
   }
-  getAllRoles(){
-    this.roleService.getAllRoles().subscribe(data=>
-      this.roles=data
-    );
-  }
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectUsertoForm(this.user.id);
 
   }
   ngOnInit(): void {
-    this.getAllRoles();
-    this.getAllAffaires()
     this.initmyUpdateForm();
     this.affectUsertoForm(this.user.id);
   }

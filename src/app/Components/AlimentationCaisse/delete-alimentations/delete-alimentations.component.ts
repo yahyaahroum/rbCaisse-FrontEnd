@@ -1,7 +1,7 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {Iaffaire} from "../../../Services/Interfaces/iaffaire";
-import {AffaireService} from "../../../Services/affaire.service";
-import {ListeAffairesComponent} from "../../Affaires/liste-affaires/liste-affaires.component";
+import {ListeAlimentationsComponent} from "../liste-alimentations/liste-demande-alimentation.component";
+import {AlimentationService} from "../../../Services/alimentation.service";
+import {IAlimentation} from "../../../Services/Interfaces/ialimentation";
 import {NotificationService} from "../../../Services/notification.service";
 
 @Component({
@@ -10,25 +10,25 @@ import {NotificationService} from "../../../Services/notification.service";
   styleUrls: ['./delete-alimentations.component.css']
 })
 export class DeleteAlimentationsComponent {
-
   @ViewChild('closebutton') closebutton;
   @Input()
-  public affaire:Iaffaire;
+  public alimentation:IAlimentation;
 
-  constructor(private affaireService: AffaireService,
-              private affaireC:ListeAffairesComponent,
+  constructor(private alimentationService: AlimentationService,
+              private alimentationC:ListeAlimentationsComponent,
               private notifyService : NotificationService) {}
 
 
-  deleteUser() {
-    this.affaireService.deleteAffaire(this.affaire.id).subscribe(data=>
-      this.notifyService.showSuccess("Affaire supprimé avec succés !!", "Suppression Affaire")
+  deleteAlimentation() {
+    this.alimentationService.delete(this.alimentation.id).subscribe(data=>
+      this.notifyService.showSuccess("Demande alimentation supprimé avec succés !!", "Suppression Demande ")
     );
     setTimeout(() => {
-      this.affaireC.ngOnInit();
+      this.alimentationC.ngOnInit();
       this.closebutton.nativeElement.click();
     },  400);
   }
+
 
 }
 

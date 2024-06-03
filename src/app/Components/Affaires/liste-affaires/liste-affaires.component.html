@@ -7,13 +7,13 @@
   <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="breadcrumb-title pe-3">Administration</div>
       <div class="ps-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Liste Utilisateurs</li>
+            <li class="breadcrumb-item active" aria-current="page">Affaires</li>
           </ol>
         </nav>
       </div>
@@ -40,6 +40,7 @@
               <th>Id</th>
               <th>Code</th>
               <th>Désignation</th>
+              <th>Caisse</th>
               <th>Statut</th>
               <th>Actions</th>
             </tr>
@@ -52,12 +53,14 @@
               <td class="align-middle col-sm-1">
                 <div class="d-flex align-items-center">
                   <div class="ms-2">
-                    <h6 class="mb-0 font-14">{{post.id}}</h6>
+                    <td class="align-middle col-lg-auto">{{post.id}}</td>
                   </div>
                 </div>
               </td>
-              <td class="align-middle col-md-2">{{post.code}}</td>
+              <td class="align-middle col-md-1">{{post.code}}</td>
               <td class="align-middle col-md-6">{{post.libelle}}</td>
+              <td class="align-middle col-md-2">{{post.caisse.nomCaisse}}</td>
+
               <td  class="align-middle col-md-3" *ngIf="post.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.statut}}</span></h6></td>
               <td  class="align-middle col-md-3" *ngIf="post.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.statut}}</span></h6></td>
 
@@ -72,6 +75,14 @@
             </tr>
             </tbody>
           </table>
+          <br>
+          <div *ngIf="POSTS.length>tableSize" class="pagination justify-content-center">
+            <pagination-controls
+              previousLabel="Précedent"
+              nextLabel="Suivant"
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>
@@ -92,14 +103,17 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-affaire></app-add-affaire>
+  <app-add-affaire [affaires]="POSTS"
+                   [caisses]="listeCaisses"></app-add-affaire>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<app-update-affaire [affaire]="affaireSelected"></app-update-affaire>
+<app-update-affaire [affaire]="affaireSelected"
+                    [affaires]="POSTS"
+                    [caisses]="listeCaisses"></app-update-affaire>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->

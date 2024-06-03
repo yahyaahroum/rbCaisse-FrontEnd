@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AffaireService} from "../../../Services/affaire.service";
 import {NotificationService} from "../../../Services/notification.service";
 import {ListeAffairesComponent} from "../liste-affaires/liste-affaires.component";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
 
 
 @Component({
@@ -15,8 +16,12 @@ export class UpdateAffaireComponent {
   @ViewChild('closebutton') closebutton;
   @Input()
   public affaire:Iaffaire;
-  myFormUpdate:FormGroup;
+  @Input()
   affaires: Iaffaire[]=[];
+  @Input()
+  caisses: ICaisse[]=[];
+  myFormUpdate:FormGroup;
+
 
   libelleExist:Iaffaire;
   codeExist:Iaffaire;
@@ -26,6 +31,7 @@ export class UpdateAffaireComponent {
               private notifyService : NotificationService) {}
 
   onUpdateAffaire() {
+    this.myFormUpdate.value.caisse=this.caisses.find(c=>c.id===this.myFormUpdate.value.caisse);
       this.libelleExist=  this.affaires.find((aff) => aff.libelle === (this.myFormUpdate.value.libelle) && (aff.id !=  this.affaire.id));
      this.codeExist=  this.affaires.find((aff) => (aff.code === this.myFormUpdate.value.code) && (aff.id !=  this.affaire.id));
     if(this.codeExist){
@@ -48,19 +54,12 @@ export class UpdateAffaireComponent {
 
     }
   }
-
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectAffaireForm(this.affaire.id);
 
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyUpdateForm();
     this.affectAffaireForm(this.affaire.id);
   }
@@ -69,6 +68,7 @@ export class UpdateAffaireComponent {
       code:['',Validators.required],
       libelle: ['',Validators.required],
       statut:['',Validators.required],
+      caisse:['',Validators.required],
 
     });
 
@@ -78,6 +78,7 @@ export class UpdateAffaireComponent {
         code: this.affaire.code,
         libelle:this.affaire.libelle,
         statut:this.affaire.statut,
+        caisse:this.affaire.caisse.id,
       });
 
   }

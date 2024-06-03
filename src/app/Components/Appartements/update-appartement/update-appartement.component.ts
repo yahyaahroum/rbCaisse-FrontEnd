@@ -7,8 +7,7 @@ import {NotificationService} from "../../../Services/notification.service";
 import {IAppartement} from "../../../Services/Interfaces/iappartement";
 import {AppartementService} from "../../../Services/appartement.service";
 import {ListeAppartementsComponent} from "../liste-appartements/liste-appartements.component";
-import {villeService} from "../../../Services/ville.service";
-import {Iville} from "../../../Services/Interfaces/iville";
+
 
 
 @Component({
@@ -22,13 +21,15 @@ export class UpdateAppartementComponent {
   @Input()
   public appartement:IAppartement;
   myFormUpdate:FormGroup;
-  villes: Iville[]=[];
+  @Input()
+  affaires: Iaffaire[]=[];
+  @Input()
   appartements: IAppartement[]=[];
   constructor(private formBuilder: FormBuilder,
               private appartementC:ListeAppartementsComponent,
               private appartementService:AppartementService,
               private notifyService : NotificationService,
-              private villeService:villeService) {}
+              private affaireService:AffaireService) {}
 
   onUpdateAppartement() {
     const cmpteauExist=  this.appartements.find((app) => (app.compteurEau === this.myFormUpdate.value.compteurEau) && (app.id !=  this.appartement.id));
@@ -42,6 +43,7 @@ export class UpdateAppartementComponent {
     }
 
     if (!cmpteauExist && !cmptelecExist) {
+      this.myFormUpdate.value.affaire=this.affaires.find(aff=>aff.id===this.myFormUpdate.value.affaire);
       this.appartementService.update(this.myFormUpdate.value, this.appartement.id).subscribe(
         data => {
           this.notifyService.showSuccess("Appartement modifié avec succés !!", "Modification Appartement");
@@ -54,21 +56,9 @@ export class UpdateAppartementComponent {
 
     }
   }
-
-  getAllVilles(){
-    this.villeService.getAll().subscribe(data=>
-      this.villes=data
-    );
-  }
-  getAllAppartements(){
-    this.appartementService.getAll().subscribe(data=>
-      this.appartements=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
-    this.getAllVilles();
-    this.getAllAppartements();
+
     this.affectAffaireForm(this.appartement.id);
 
   }
@@ -82,6 +72,7 @@ export class UpdateAppartementComponent {
       compteurEau:['',Validators.required],
       compteurElectricite:['',Validators.required],
       montantLoye:['',Validators.required],
+      affaire:['',Validators.required],
 
     });
 
@@ -92,6 +83,7 @@ export class UpdateAppartementComponent {
       compteurEau:this.appartement.compteurEau,
       compteurElectricite:this.appartement.compteurElectricite,
       montantLoye:this.appartement.montantLoye,
+      affaire:this.appartement.affaire.id
     });
 
   }

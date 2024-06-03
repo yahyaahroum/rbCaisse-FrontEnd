@@ -22,21 +22,22 @@ export class UpdateCaisseComponent {
   @Input()
   public caisse:ICaisse;
   myFormUpdate:FormGroup;
+  @Input()
   caisses: ICaisse[]=[];
+  @Input()
   affaires: Iaffaire[]=[];
   constructor(private formBuilder: FormBuilder,
               private natureC:ListeCaissesComponent,
               private caisseService:CaisseService,
-              private notifyService : NotificationService,
-              private affaireService:AffaireService) {}
+              private notifyService : NotificationService) {}
 
   onUpdateCaisse() {
-    const affaireExist=  this.caisses.find((c) => c.affaire.id === (this.myFormUpdate.value.affaire) && (c.id !=  this.caisse.id));
-
-    if(affaireExist){
-      this.notifyService.showError("Cette affaire a dejà une caisse !!", "Erreur Affaire");
+    const nomExist=  this.caisses.find((a) => a.nomCaisse === this.myFormUpdate.value.nomCaisse);
+    if(nomExist){
+      this.notifyService.showError("Un caisse existe dejà avec ce nom !!", "Erreur Caisse");
     }
-    if (!affaireExist) {
+
+    if (!nomExist) {
       this.myFormUpdate.value.affaire=this.affaires.find((a) => (a.id === this.myFormUpdate.value.affaire));
       this.caisseService.update(this.myFormUpdate.value, this.caisse.id).subscribe(
         data => {
@@ -50,31 +51,20 @@ export class UpdateCaisseComponent {
 
     }
   }
-  getAllCaisses(){
-    this.caisseService.getAll().subscribe(data=>
-      this.caisses=data
-    );
-  }
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectForm(this.caisse.id);
 
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyUpdateForm();
-    this.getAllCaisses();
     this.affectForm(this.caisse.id);
   }
   private initmyUpdateForm() {
     this.myFormUpdate = this.formBuilder.group({
-      soldeActuel: ['',Validators.required],
-      affaire: ['',Validators.required],
+      nomCaisse: ['',Validators.required],
+      soldeActuel:['',Validators.required],
+      statut: ['',Validators.required],
 
 
     });
@@ -83,7 +73,8 @@ export class UpdateCaisseComponent {
   private affectForm(id:number){
     this.myFormUpdate.setValue({
       soldeActuel:this.caisse.soldeActuel,
-      affaire: this.caisse.affaire.id,
+      nomCaisse:this.caisse.nomCaisse ,
+      statut: this.caisse.statut,
     });
 
   }

@@ -19,11 +19,18 @@ export class ListeAppartementsComponent {
   tableSizes: any = [5, 10, 15, 20];
   pfiltre: any;
   appartementSelected: any;
-  constructor(private appartementService: AppartementService,) {}
+  listeAffaires:Iaffaire[]=[];
+  constructor(private appartementService: AppartementService,
+              private affaireService:AffaireService) {}
   postList(): void {
     this.appartementService.getAll().subscribe(data=>{
       this.POSTS=data;
     })
+  }
+  getAllAffaires(){
+    this.affaireService.getAll().subscribe(data=>
+      this.listeAffaires=data
+    );
   }
 
   ngOnChanges(): void {
@@ -31,11 +38,18 @@ export class ListeAppartementsComponent {
   }
 
   ngOnInit(): void {
+    this.getAllAffaires();
     this.postList();
   }
 
   recupAppartement(appartement: IAppartement) {
     this.appartementSelected=appartement;
   }
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
+
+  }
+
 }
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotificationService} from "../../../Services/notification.service";
 import {Icomptecomptable} from "../../../Services/Interfaces/icomptecomptable";
@@ -16,8 +16,8 @@ export class AddCompteComptableComponent {
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  @Input()
   compteComptables: Icomptecomptable[]=[];
-  libelleExist: boolean = false;
   constructor(private notifyService: NotificationService,
               private compteComptableC:ListeCompteComptableComponent,
               private compteComptableService: ComptecomptableService,
@@ -26,12 +26,6 @@ export class AddCompteComptableComponent {
   }
   onMaterialGroupChange(event) {}
 
-
-  getAllcompteComptables(){
-    this.compteComptableService.getAll().subscribe(data=>
-      this.compteComptables=data
-    );
-  }
   onAdd() {
 
     const codeExist=  this.compteComptables.find((fo) => fo.codeComptable === this.myFormAdd.value.codeComptable);
@@ -63,7 +57,6 @@ export class AddCompteComptableComponent {
     });
   }
   ngOnInit(): void {
-    this.getAllcompteComptables()
     this.initmyForm();
   }
 }

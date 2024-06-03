@@ -36,6 +36,10 @@ export class ListeModesComponent  implements OnInit,OnChanges{
   recupMode(mode: IModeOperation) {
     this.modeSelected=mode;
   }
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
 
+  }
 }
 

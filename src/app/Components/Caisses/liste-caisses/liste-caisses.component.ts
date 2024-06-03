@@ -33,6 +33,11 @@ export class ListeCaissesComponent implements OnInit,OnChanges{
   recupCaisse(caisse: ICaisse) {
     this.caisseSelected=caisse;
   }
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
+
+  }
 
 }
 

@@ -19,8 +19,8 @@ export class UpdateFonctionComponent {
   @Input()
   public fonction:IfonctionEmploye;
   myFormUpdate:FormGroup;
+  @Input()
   fonctions: IfonctionEmploye[]=[];
-
   libelleExist:IfonctionEmploye;
   codeExist:IfonctionEmploye;
   constructor(private formBuilder: FormBuilder,
@@ -47,27 +47,18 @@ export class UpdateFonctionComponent {
 
     }
   }
-
-  getAllAffaires(){
-    this.fonctionService.getAll().subscribe(data=>
-      this.fonctions=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectFonctionForm(this.fonction.id);
 
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyUpdateForm();
     this.affectFonctionForm(this.fonction.id);
   }
   private initmyUpdateForm() {
     this.myFormUpdate = this.formBuilder.group({
-
       libelle: ['',Validators.required],
-
     });
 
   }

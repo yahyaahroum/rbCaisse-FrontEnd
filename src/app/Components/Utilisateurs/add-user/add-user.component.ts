@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Irole} from "../../../Services/Interfaces/irole";
 import {UtilisateurService} from "../../../Services/utilisateur.service";
 import {RoleService} from "../../../Services/role.service";
@@ -10,7 +10,6 @@ import {AffaireService} from "../../../Services/affaire.service";
 import {NotificationService} from "../../../Services/notification.service";
 import {ListeUtilisateursComponent} from "../liste-utilisateurs/liste-utilisateurs.component";
 import {Affaire} from "../../../Services/Classes/affaire";
-import {TokenStorageService} from "../../../Auth/services/token-storage.service";
 
 @Component({
   selector: 'app-add-user',
@@ -19,12 +18,14 @@ import {TokenStorageService} from "../../../Auth/services/token-storage.service"
 })
 export class AddUserComponent implements OnInit{
   myFormAdd: FormGroup;
-  listeAffaires: Affaire[] = [];
   confirmpassword: null;
-  listeRoles: [] = [];
-  roles: Irole[] = [];
+  @Input()
+  listeAffaires: Iaffaire[] = [];
+  @Input()
+  listeRoles: Irole[] = [];
+  @Input()
+  Users:Iuser[]=[];
   user: Iuser;
-  affaires: Iaffaire[] = [];
   showPassword?: boolean = false;
   showconfirmPassword?: boolean = false;
   usernameExist: boolean = false;
@@ -41,10 +42,9 @@ export class AddUserComponent implements OnInit{
   }
   constructor(private notifyService: NotificationService,
               private userC:ListeUtilisateursComponent,
-              private affaireservice: AffaireService,
               private formBuilder: FormBuilder,
               private userservice: UtilisateurService,
-              private roleService: RoleService,
+
   ) {
   }
   onMaterialGroupChange(event) {}
@@ -53,17 +53,6 @@ export class AddUserComponent implements OnInit{
       this.listeAffaires = x;
     });
   }*/
-
-  getAllRoles() {
-    this.roleService.getAllRoles().subscribe(data =>
-        this.roles = data
-    );
-  }
-  getAllAffaires(){
-    this.affaireservice.getAll().subscribe(data=>
-        this.affaires=data
-    );
-  }
   onAdd() {
     this.userservice.existeByUsername(this.myFormAdd.value.username).subscribe(username => {
           this.usernameExist = username;
@@ -140,8 +129,7 @@ export class AddUserComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.getAllRoles();
-    this.getAllAffaires()
+
     this.initmyForm();
   }
 }

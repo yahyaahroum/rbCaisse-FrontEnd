@@ -4,6 +4,7 @@ import {environment} from "../../environnements/environment";
 import {HttpClient, HttpEvent, HttpHeaders} from "@angular/common/http";
 import {Iaffaire} from "./Interfaces/iaffaire";
 import {Iuser} from "./Interfaces/iuser";
+import {Affaire} from "./Classes/affaire";
 const AUTH_API = 'api/affaire';
 
 const httpOptions = {
@@ -29,7 +30,6 @@ export class AffaireService {
     return this.http.put<Iaffaire>(environment.apiUrl + AUTH_API +"/update/"+id,affaire,httpOptions)
   }
   addAffaire(affaire:Iaffaire):Observable<Iaffaire>{
-    console.log(affaire);
     return this.http.post<Iaffaire>(environment.apiUrl + AUTH_API +"/add",affaire,httpOptions)
   }
 

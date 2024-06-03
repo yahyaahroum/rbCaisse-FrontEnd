@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotificationService} from "../../../Services/notification.service";
 import {IfonctionEmploye} from "../../../Services/Interfaces/ifonctionEmploye";
@@ -16,6 +16,7 @@ export class AddFonctionComponent {
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  @Input()
   fonctions: IfonctionEmploye[]=[];
   libelleExist: boolean = false;
   constructor(private notifyService: NotificationService,
@@ -25,13 +26,6 @@ export class AddFonctionComponent {
   ) {
   }
   onMaterialGroupChange(event) {}
-
-
-  getAllFonctions(){
-    this.fonctionService.getAll().subscribe(data=>
-      this.fonctions=data
-    );
-  }
   onAdd() {
 
     const libelleExist=  this.fonctions.find((aff) => aff.libelle === this.myFormAdd.value.libelle);
@@ -60,7 +54,6 @@ export class AddFonctionComponent {
     });
   }
   ngOnInit(): void {
-    this.getAllFonctions()
     this.initmyForm();
   }
 }

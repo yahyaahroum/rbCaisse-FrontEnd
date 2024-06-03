@@ -15,6 +15,7 @@ export class UpdateModeComponent {
   @Input()
   public modeOp:IModeOperation;
   myFormUpdate:FormGroup;
+  @Input()
   modes: IModeOperation[]=[];
   constructor(private formBuilder: FormBuilder,
               private modeC:ListeModesComponent,
@@ -40,19 +41,12 @@ export class UpdateModeComponent {
 
     }
   }
-
-  getAllModes(){
-    this.modeService.getAll().subscribe(data=>
-      this.modes=data
-    );
-  }
   ngOnChanges(changes: SimpleChanges): void {
     this.initmyUpdateForm();
     this.affectModeForm(this.modeOp.id);
 
   }
   ngOnInit(): void {
-    this.getAllModes()
     this.initmyUpdateForm();
     this.affectModeForm(this.modeOp.id);
   }

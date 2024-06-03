@@ -1,4 +1,4 @@
-import {Iville} from "./iville";
+import {Iaffaire} from "./iaffaire";
 
 export interface IAppartement {
     id:number;
@@ -6,5 +6,5 @@ export interface IAppartement {
     montantLoye:number;
     compteurEau:string;
     compteurElectricite:string;
-    ville:Iville;
+    affaire:Iaffaire;
 }

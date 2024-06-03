@@ -50,12 +50,12 @@
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Ville</label>
+                  <label class="col-sm-3 col-form-label">Affaire</label>
                   <div class="col-sm-9">
-                    <ng-select placeholder="Selectionnez une ville" formControlName="ville"
-                               name="ville">
-                      <ng-option *ngFor="let ville of villes" [value]="ville" (change)="onMaterialGroupChange($event)">
-                        {{ville.libelle}}</ng-option>
+                    <ng-select placeholder="Selectionnez une affaire" formControlName="affaire"
+                               name="affaire">
+                      <ng-option *ngFor="let affaire of affaires" [value]="affaire" (change)="onMaterialGroupChange($event)">
+                        {{affaire.libelle}}</ng-option>
                     </ng-select>
                   </div>
                 </div>

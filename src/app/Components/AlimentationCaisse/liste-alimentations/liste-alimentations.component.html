@@ -7,13 +7,13 @@
   <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="breadcrumb-title pe-3">Caisse</div>
       <div class="ps-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Liste Utilisateurs</li>
+            <li class="breadcrumb-item active" aria-current="page">Liste alimentations de caisse</li>
           </ol>
         </nav>
       </div>
@@ -24,23 +24,30 @@
       <div class="card-body">
         <div class="d-lg-flex align-items-center mb-4 gap-3">
           <div class="position-relative">
-            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une affaire..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une alimentation..."
+                   [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y">
+            <i class="bx bx-search"></i></span>
           </div>
           <div class="ms-auto">
             <a type="Button" class="btn btn-light radius-30 mt-2 mt-lg-0"
                data-bs-toggle="modal" data-bs-target="#addModal">
-              <i class="bx bxs-plus-square" ></i>Ajouter une affaire</a>
+              <i class="bx bxs-plus-square" ></i>Demander Alimentation</a>
           </div>
 
         </div>
         <div class="table-responsive">
-          <table class="table mb-0">
+          <table class="table mb-0 table-hover">
             <thead class="table-light">
             <tr>
               <th>Id</th>
-              <th>Code</th>
-              <th>Désignation</th>
-              <th>Statut</th>
+              <th>Demandeur</th>
+              <th>Nom Caisse</th>
+              <th>Date Demande</th>
+              <th>Motif</th>
+              <th>Montant Demandé</th>
+              <th>Solde Caisse</th>
+              <th>Nature</th>
+              <th>Etat</th>
               <th>Actions</th>
             </tr>
             </thead>
@@ -49,29 +56,61 @@
                      itemsPerPage: tableSize,
                      currentPage: page,
                      totalItems: count}; let i = index ">
-              <td>
+              <td class="align-middle">
                 <div class="d-flex align-items-center">
                   <div class="ms-2">
                     <h6 class="mb-0 font-14">{{post.id}}</h6>
                   </div>
                 </div>
               </td>
-              <td>{{post.code}}</td>
-              <td>{{post.libelle}}</td>
-              <td *ngIf="post.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.statut}}</span></h6></td>
-              <td *ngIf="post.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.statut}}</span></h6></td>
-
-              <td>
+              <td class="align-middle">{{post.demandePar.nom +' '+post.demandePar.prenom}}</td>
+              <td class="align-middle">{{post.caisse.nomCaisse}}</td>
+              <td class="align-middle">{{post.dateDemande | date: 'dd/MM/yyyy' }}</td>
+              <td class="align-middle">{{post.motif}}</td>
+              <td class="align-middle">{{post.montant | number: '1.0-1' }}</td>
+              <td class="align-middle">{{post.caisse.soldeActuel | number: '1.0-1' }}</td>
+              <td class="align-middle">{{post.natureAlimentation.libelle}}</td>
+              <td class="align-middle">{{post.statut}}</td>
+              <td class="align-middle">
                 <div class="d-flex order-actions w-auto">
-                  <a data-bs-toggle="modal" data-bs-target="#updateModal" (click)="recupAffaire(post)"
-                     class="ms-3"><i class='bx bxs-edit'></i></a>
-                  <a data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="recupAffaire(post)"
-                     class="ms-3"><i class='bx bxs-trash'></i></a>
+                  <div *ngIf="hasRole('admin') || hasRole('caissier')">
+                  <button data-bs-toggle="modal"  [disabled]="post.statut!='Brouillon'"
+                          data-bs-target="#validationModal" (click)="recupAlimentation(post)">
+                    <i class="fadeIn animated bx bx-paper-plane"></i></button>
+                  </div>
+                  <div *ngIf="hasRole('admin') || hasRole('comptable')">
+                    <button data-bs-toggle="modal"
+                       data-bs-target="#pjModal" (click)="recupAlimentation(post)" class="ms-2 .bx">
+                      <i class="lni lni-checkmark" ></i></button>
+                  </div>
+                  <div>
+                  <button data-bs-toggle="modal" data-bs-target="#pjModal" (click)="recupAlimentation(post)"
+                     class="ms-2">
+                    <i class="fadeIn animated bx bx-paperclip" ></i></button>
+                </div>
+                  <div *ngIf="!hasRole('consulteur')">
+                  <button data-bs-toggle="modal" data-bs-target="#updateModal"
+                          [disabled]="post.statut!='Brouillon'" (click)="recupAlimentation(post)"
+                    class="ms-2"><i class='bx bxs-edit'></i></button>
+                  </div>
+                  <div *ngIf="!hasRole('consulteur')">
+                  <button data-bs-toggle="modal" data-bs-target="#deleteModal"
+                          [disabled]="post.statut!='Brouillon'" (click)="recupAlimentation(post)"
+                     class="ms-2"><i class='bx bxs-trash'></i></button>
+                  </div>
                 </div>
               </td>
             </tr>
             </tbody>
           </table>
+          <br>
+          <div class="pagination justify-content-center">
+            <pagination-controls
+              previousLabel="Précedent"
+              nextLabel="Suivant"
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>
@@ -92,17 +131,36 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-affaire></app-add-affaire>
+  <app-add-alimentations [caisses]="listeCaisses"
+                         [alimentations]="POSTS"
+                         [listeNatureAlimentation]="natures">
+                         </app-add-alimentations>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-update-affaire [affaire]="affaireSelected"></app-update-affaire>
+  <app-update-alimentations [alimentation]="alimentationSelected"
+                            [caisses]="listeCaisses"
+                            [listeNatureAlimentation]="natures">
+
+  </app-update-alimentations>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-  <app-delete-affaire [affaire]="affaireSelected"></app-delete-affaire>
+  <app-delete-alimentations [alimentation]="alimentationSelected">
+  </app-delete-alimentations>
+</div>
+<!-------------------------Modal Piéce Jointe-------------------------------->
+<div class="modal fade" id="pjModal" tabindex="-1" aria-hidden="true">
+  <app-piece-jointe [alimentation]="alimentationSelected">
+  </app-piece-jointe>
+</div>
+<!-------------------------Modal Validation Demande Alimentation-------------------------------->
+
+<div class="modal fade" id="validationModal" tabindex="-1" aria-hidden="true">
+  <app-validation-demande-alimentation [alimentation]="alimentationSelected">
+  </app-validation-demande-alimentation>
 </div>

@@ -1,12 +1,16 @@
 import {ICaisse} from "./icaisse";
 import {IBanque} from "./ibanque";
+import {Iuser} from "./iuser";
+import {Inaturealimentation} from "./inaturealimentation";
 
 export interface IAlimentation {
     id:number;
-    dateAlimentation:Date;
+    dateDemande:Date;
     montant:number;
-    etat:string;
-    pieceJointe:string;
+    natureAlimentation:Inaturealimentation;
+    motif:string;
+    statut:string;
     caisse:ICaisse;
-    banque:IBanque;
+    demandePar:Iuser;
+
 }

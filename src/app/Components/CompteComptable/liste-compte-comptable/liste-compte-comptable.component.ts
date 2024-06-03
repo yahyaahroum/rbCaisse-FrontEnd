@@ -36,6 +36,10 @@ export class ListeCompteComptableComponent implements OnInit,OnChanges{
   recupcompteComptable(compteComptable: Icomptecomptable) {
     this.compteComptableSelected=compteComptable;
   }
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
 
+  }
 
 }

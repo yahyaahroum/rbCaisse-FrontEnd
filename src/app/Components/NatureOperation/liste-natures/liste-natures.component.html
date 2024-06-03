@@ -7,13 +7,13 @@
   <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="breadcrumb-title pe-3">Administration</div>
       <div class="ps-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Liste Utilisateurs</li>
+            <li class="breadcrumb-item active" aria-current="page">Nature Opération</li>
           </ol>
         </nav>
       </div>
@@ -24,7 +24,7 @@
       <div class="card-body">
         <div class="d-lg-flex align-items-center mb-4 gap-3">
           <div class="position-relative">
-            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une affaire..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une nature..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
           </div>
           <div class="ms-auto">
             <a type="Button" class="btn btn-light radius-30 mt-2 mt-lg-0"
@@ -69,6 +69,14 @@
             </tr>
             </tbody>
           </table>
+          <br>
+          <div *ngIf="POSTS.length>tableSize" class="pagination justify-content-center">
+            <pagination-controls
+              previousLabel="Précedent"
+              nextLabel="Suivant"
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>
@@ -89,14 +97,17 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-nature></app-add-nature>
+  <app-add-nature [comptesCoptable]="comptesComptable"
+                   [natures]="POSTS"></app-add-nature>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-update-nature [nature]="natureSelected"></app-update-nature>
+  <app-update-nature [nature]="natureSelected"
+                     [comptesCoptable]="comptesComptable"
+                     [natures]="POSTS"></app-update-nature>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->

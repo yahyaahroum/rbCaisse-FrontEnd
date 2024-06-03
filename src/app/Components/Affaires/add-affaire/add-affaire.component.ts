@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AffaireService} from "../../../Services/affaire.service";
 import {NotificationService} from "../../../Services/notification.service";
 import {ListeAffairesComponent} from "../liste-affaires/liste-affaires.component";
+import {ICaisse} from "../../../Services/Interfaces/icaisse";
 @Component({
   selector: 'app-add-affaire',
   templateUrl: './add-affaire.component.html',
@@ -11,8 +12,12 @@ import {ListeAffairesComponent} from "../liste-affaires/liste-affaires.component
 })
 export class AddAffaireComponent {
   @ViewChild('closebutton') closebutton;
-  myFormAdd: FormGroup;
+  @Input()
   affaires: Iaffaire[]=[];
+  @Input()
+  caisses: ICaisse[]=[];
+  myFormAdd: FormGroup;
+
 
   codeExist: boolean = false;
   libelleExist: boolean = false;
@@ -24,12 +29,6 @@ export class AddAffaireComponent {
   }
   onMaterialGroupChange(event) {}
 
-
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
-    );
-  }
   onAdd() {
 
     const libelleExist=  this.affaires.find((aff) => aff.libelle === this.myFormAdd.value.libelle);
@@ -61,10 +60,10 @@ export class AddAffaireComponent {
       code:['',Validators.required],
       libelle: ['',Validators.required],
       statut:['',Validators.required],
+      caisse:['',Validators.required],
     });
   }
   ngOnInit(): void {
-    this.getAllAffaires()
     this.initmyForm();
   }
 }

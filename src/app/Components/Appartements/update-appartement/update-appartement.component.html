@@ -13,33 +13,50 @@
                 <div class="card-title d-flex align-items-center">
                   <div><i class="bx bxs-user me-1 font-22 text-white"></i>
                   </div>
-                  <h5 class="mb-0 text-white">Modification d'une affaire</h5>
+                  <h5 class="mb-0 text-white">Modification appartement</h5>
                 </div>
                 <hr/>
 
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Code Affaire</label>
+                  <label class="col-sm-3 col-form-label">Libellé</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Entrez le code d'affaire"
-                           formControlName="code"
-                           id="code" name="code" required>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Nom Affaire</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" placeholder="Entrez le nom d'affaire"
-                           formControlName="libelle"
+                    <input type="text" class="form-control" placeholder="Entrez le libelle"
+                           formControlName="libelle" autocomplete="off"
                            id="libelle" name="libelle" required>
                   </div>
                 </div>
                 <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label">Statut</label>
+                  <label class="col-sm-3 col-form-label">Compteur Eau</label>
                   <div class="col-sm-9">
-                    <select formControlName="statut" class="form-select">
-                      <option value="Actif">Actif</option>
-                      <option value="Inactif">Inactif</option>
-                    </select>
+                    <input type="text" class="form-control" placeholder="Entrez le numero de compteur d'eau"
+                           formControlName="compteurEau" autocomplete="off"
+                           id="compteurEau" name="compteurEau">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Compteur Electricité</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" placeholder="Entrez le numero de compteur d'electricité"
+                           formControlName="compteurElectricite" autocomplete="off"
+                           id="compteurElectricite" name="compteurElectricite" >
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Prix Loyé</label>
+                  <div class="col-sm-9">
+                    <input type="number" class="form-control" placeholder="Entrez le prix du loyé"
+                           formControlName="montantLoye"
+                           id="montantLoye" name="montantLoye" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Affaire</label>
+                  <div class="col-sm-9">
+                    <ng-select placeholder="Selectionnez une affaire" formControlName="affaire"
+                               name="affaire">
+                      <ng-option *ngFor="let affaire of affaires" [value]="affaire.id" (change)="onMaterialGroupChange($event)">
+                        {{affaire.code +' - '+ affaire.libelle}}</ng-option>
+                    </ng-select>
                   </div>
                 </div>
               </div>

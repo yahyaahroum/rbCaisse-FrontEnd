@@ -24,7 +24,8 @@ export class ListeUtilisateursComponent implements OnInit,OnChanges {
   tableSizes: any = [5, 10, 15, 20];
   pfiltre: any;
   userSelected:Iuser=null;
-
+  roles:Irole[]=[];
+  affaires:Iaffaire[]=[];
   constructor(private tokenstorage: TokenStorageService,
               private userService: UtilisateurService,
               private notifyService: NotificationService,
@@ -40,14 +41,31 @@ export class ListeUtilisateursComponent implements OnInit,OnChanges {
       this.POSTS = data;
     })
   }
-
+  getAllRoles() {
+    this.roleService.getAllRoles().subscribe(data =>
+      this.roles = data
+    );
+  }
+  getAllAffaires(){
+    this.affaireservice.getAll().subscribe(data=>
+      this.affaires=data
+    );
+  }
   ngOnChanges(): void {
     this.postList();
   }
   ngOnInit(): void {
     this.postList();
+    this.getAllRoles();
+    this.getAllAffaires()
+
   }
   recupUser(user: Iuser) {
     this.userSelected=user;
+  }
+  onTableDataChange(event: any) {
+    this.page = event;
+    this.postList();
+
   }
 }

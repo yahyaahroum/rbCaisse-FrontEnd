@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotificationService} from "../../../Services/notification.service";
 import {ICaisse} from "../../../Services/Interfaces/icaisse";
@@ -16,7 +16,9 @@ export class AddCaisseComponent {
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  @Input()
   caisses: ICaisse[]=[];
+  @Input()
   affaires: Iaffaire[]=[];
 
   constructor(private notifyService: NotificationService,
@@ -29,23 +31,14 @@ export class AddCaisseComponent {
   onMaterialGroupChange(event) {}
 
 
-  getAllcaisses(){
-    this.caisseService.getAll().subscribe(data=>
-      this.caisses=data
-    );
-  }
-  getAllAffaires(){
-    this.affaireService.getAll().subscribe(data=>
-      this.affaires=data
-    );
-  }
+
   onAdd() {
-    const codeExist=  this.caisses.find((a) => a.affaire.id === this.myFormAdd.value.affaire.id);
-    if(codeExist){
-      this.notifyService.showError("Cette caisse existe dejà pour ce chantier !!", "Erreur Caisse");
+    const nomExist=  this.caisses.find((a) => a.nomCaisse === this.myFormAdd.value.nomCaisse);
+    if(nomExist){
+      this.notifyService.showError("Un caisse existe dejà avec ce nom !!", "Erreur Caisse");
     }
 
-    if (!codeExist) {
+    if (!nomExist) {
 
       this.caisseService.register(this.myFormAdd.value).subscribe(
         data => {
@@ -62,13 +55,12 @@ export class AddCaisseComponent {
 
   private initmyForm() {
     this.myFormAdd = this.formBuilder.group({
+      nomCaisse: ['',Validators.required],
       soldeActuel:['',Validators.required],
-      affaire: ['',Validators.required],
+      statut: ['Actif',Validators.required],
     });
   }
   ngOnInit(): void {
-    this.getAllcaisses()
-    this.getAllAffaires()
     this.initmyForm();
   }
 }

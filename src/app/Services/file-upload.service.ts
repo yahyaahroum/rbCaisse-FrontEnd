@@ -27,23 +27,22 @@ export class FileUploadService {
   getFiles(): Observable<any> {
     return this.http.get(environment.apiUrl + AUTH_API+'/files');
   }
-  getFilesByDA(id:any):Observable<Ifiles>{
-    return this.http.get<Ifiles>(environment.apiUrl + AUTH_API+'/filesByDA/'+id);
+  getFilesByAlimentation(id:any):Observable<Ifiles>{
+    return this.http.get<Ifiles>(environment.apiUrl + AUTH_API+'/filesByAlimentation/'+id);
 
   }
-  saveFileByIdDa(id:number,file: File):Observable<any> {
+  saveFileByIdAlimentation(id:number,file: File):Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
     //formData.append('entityData', JSON.stringify(Damandeachat));
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
-    return this.http.post(environment.apiUrl+AUTH_API+'/savePjDaById/'+id, formData, { headers });
+    return this.http.post(environment.apiUrl+AUTH_API+'/savePjAlimentationById/'+id, formData, { headers });
   }
   getFileByName(nameFile:string):Observable<any>{
     return this.http.get<any>(environment.apiUrl + AUTH_API+'/files/'+nameFile);
   }
   deleteFile(nameFile:string){
-
     return this.http.delete(environment.apiUrl + AUTH_API+'/deleteFiles/'+nameFile);
   }
 }

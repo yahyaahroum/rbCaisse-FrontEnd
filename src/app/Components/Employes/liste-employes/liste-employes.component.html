@@ -7,13 +7,13 @@
   <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="breadcrumb-title pe-3">Administration</div>
       <div class="ps-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Liste employés</li>
+            <li class="breadcrumb-item active" aria-current="page">Employés</li>
           </ol>
         </nav>
       </div>
@@ -72,6 +72,14 @@
             </tr>
             </tbody>
           </table>
+          <br>
+          <div *ngIf="POSTS.length>tableSize" class="pagination justify-content-center">
+            <pagination-controls
+              previousLabel="Précedent"
+              nextLabel="Suivant"
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>
@@ -92,14 +100,17 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-employe></app-add-employe>
+  <app-add-employe [employes]="POSTS"
+                   [listeFonctions]="listeFonctions"></app-add-employe>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-update-employe [employe]="employeSelected"></app-update-employe>
+  <app-update-employe [employe]="employeSelected"
+                      [employes]="POSTS"
+                      [listeFonctions]="listeFonctions"></app-update-employe>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->

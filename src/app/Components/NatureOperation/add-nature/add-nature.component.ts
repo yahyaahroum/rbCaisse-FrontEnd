@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NotificationService} from "../../../Services/notification.service";
 import {INatureOperation} from "../../../Services/Interfaces/inature-operation";
@@ -16,38 +16,26 @@ export class AddNatureComponent {
 
   @ViewChild('closebutton') closebutton;
   myFormAdd: FormGroup;
+  @Input()
   natures: INatureOperation[]=[];
+  @Input()
   comptesCoptable: Icomptecomptable[]=[];
   constructor(private notifyService: NotificationService,
               private natureC:ListeNaturesComponent,
               private natureService: NatureOperationService,
-              private formBuilder: FormBuilder,
-              private compteComptableService:ComptecomptableService
-  ) {
+              private formBuilder: FormBuilder) {
   }
   onMaterialGroupChange(event) {}
 
 
-  getAllnatures(){
-    this.natureService.getAll().subscribe(data=>
-      this.natures=data
-    );
-  }
-  getAllCompteComptable(){
-    this.compteComptableService.getAll().subscribe(data=>
-      this.comptesCoptable=data
-    );
-  }
+
+
   onAdd() {
-
     const libelleExist=  this.natures.find((na) => na.libelle === this.myFormAdd.value.libelle);
-
     if(libelleExist){
       this.notifyService.showError("Cette nature d'opération existe déjà !!", "Erreur Nom");
-
     }
     if (!libelleExist) {
-
       this.natureService.register(this.myFormAdd.value).subscribe(
         data => {
           this.notifyService.showSuccess("Nature d'opération ajouté avec succés !!", "Ajout Nature");
@@ -60,7 +48,6 @@ export class AddNatureComponent {
 
     }
   }
-
   private initmyForm() {
     this.myFormAdd = this.formBuilder.group({
       libelle: ['',Validators.required],
@@ -68,8 +55,6 @@ export class AddNatureComponent {
     });
   }
   ngOnInit(): void {
-    this.getAllnatures();
-    this.getAllCompteComptable();
     this.initmyForm();
   }
 }

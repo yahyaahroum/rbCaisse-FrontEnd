@@ -7,13 +7,13 @@
   <div class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-      <div class="breadcrumb-title pe-3">Utilisateurs</div>
+      <div class="breadcrumb-title pe-3">Caisse</div>
       <div class="ps-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0 p-0">
             <li class="breadcrumb-item"><a routerLink="/Acceuil"><i class="bx bx-home-alt"></i></a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Liste Utilisateurs</li>
+            <li class="breadcrumb-item active" aria-current="page">Suivi Caisse</li>
           </ol>
         </nav>
       </div>
@@ -24,23 +24,30 @@
       <div class="card-body">
         <div class="d-lg-flex align-items-center mb-4 gap-3">
           <div class="position-relative">
-            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une affaire..." [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y"><i class="bx bx-search"></i></span>
+            <input type="text" class="form-control ps-5 radius-30" placeholder="Chercher une dépense..."
+                   [(ngModel)]="pfiltre"> <span class="position-absolute top-50 product-show translate-middle-y">
+            <i class="bx bx-search"></i></span>
           </div>
           <div class="ms-auto">
             <a type="Button" class="btn btn-light radius-30 mt-2 mt-lg-0"
                data-bs-toggle="modal" data-bs-target="#addModal">
-              <i class="bx bxs-plus-square" ></i>Ajouter une affaire</a>
+              <i class="bx bxs-plus-square" ></i>Ajouter une dépense</a>
           </div>
 
         </div>
         <div class="table-responsive">
-          <table class="table mb-0">
+          <table class="table mb-0 table-hover">
             <thead class="table-light">
             <tr>
               <th>Id</th>
-              <th>Code</th>
+              <th>Affaire</th>
+              <th>Date Dépense</th>
               <th>Désignation</th>
-              <th>Statut</th>
+              <th>N° Piéce</th>
+              <th>Montant</th>
+              <th>Nature</th>
+              <th>Mode</th>
+              <th>Employé</th>
               <th>Actions</th>
             </tr>
             </thead>
@@ -56,8 +63,14 @@
                   </div>
                 </div>
               </td>
-              <td>{{post.code}}</td>
-              <td>{{post.libelle}}</td>
+              <td>{{post.affaireDepense.code +' - '+ post.affaireDepense.libelle}}</td>
+              <td>{{post.dateDepense | date: 'dd/MM/yyyy'}}</td>
+              <td>{{post.designation}}</td>
+              <td>{{post.numeroPiece}}</td>
+              <td>{{post.montant | number: '1.0-1'}}</td>
+              <td>{{post.natureOperation.libelle}}</td>
+              <td>{{post.modeOperation.libelle}}</td>
+              <td>{{post.employeDepense.nom+' '+post.employeDepense.prenom}}</td>
               <td *ngIf="post.statut=='Actif'"><h6><span class="badge bg-success w-75">{{post.statut}}</span></h6></td>
               <td *ngIf="post.statut=='Inactif'"><h6><span class="badge bg-danger w-75">{{post.statut}}</span></h6></td>
 
@@ -72,6 +85,15 @@
             </tr>
             </tbody>
           </table>
+          <br>
+          <br>
+          <div *ngIf="POSTS.length>tableSize" class="pagination justify-content-center">
+            <pagination-controls
+              previousLabel="Précedent"
+              nextLabel="Suivant"
+              (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+          </div>
         </div>
       </div>
     </div>
@@ -92,17 +114,26 @@
 
 <div class="modal fade bd-Users-modal-sm" id="addModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-add-affaire></app-add-affaire>
+  <app-add-suivi-caisse [affaires]="affaires"
+                        [naturesOperations]="naturesOpeations"
+                        [caisses]="caisses"
+                        [employes]="employes"
+                        [modesOperations]="modesOperations"></app-add-suivi-caisse>
 </div>
 
 <!------------------------Modal Ajout ----------------------------->
 
 <div class="modal fade bd-Users-modal-sm" id="updateModal"
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <app-update-affaire [affaire]="affaireSelected"></app-update-affaire>
+  <app-update-suivi-caisse [suivi]="suiviSelected"
+                           [affaires]="affaires"
+                           [naturesOpeations]="naturesOpeations"
+                           [caisses]="caisses"
+                           [employes]="employes"
+                           [modesOperations]="modesOperations"></app-update-suivi-caisse>
 </div>
 
 <!-------------------------Modal Suppression-------------------------------->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-  <app-delete-affaire [affaire]="affaireSelected"></app-delete-affaire>
+  <app-delete-suivi-caisse [suivi]="suiviSelected"></app-delete-suivi-caisse>
 </div>
